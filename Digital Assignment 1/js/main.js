@@ -15,6 +15,7 @@ window.onload = function () {
 
     function preload() {
 
+        game.load.image('sky', 'assets/skies/cavern2.png');
         game.load.tilemap('map', 'assets/tilemaps/maps/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
         game.load.image('walls_1x2', 'assets/tilemaps/tiles/walls_1x2.png');
@@ -32,7 +33,8 @@ window.onload = function () {
 
         game.physics.startSystem(Phaser.Physics.P2JS);
 
-        game.stage.backgroundColor = '#2d2d2d';
+        //        game.stage.backgroundColor = '#2d2d2d';
+        game.add.sprite(0, 0, 'sky');
 
         map = game.add.tilemap('map');
 
@@ -40,7 +42,7 @@ window.onload = function () {
         map.addTilesetImage('walls_1x2');
         map.addTilesetImage('tiles2');
 
-        layer = map.createLayer('Tile Layer 2');
+        layer = map.createLayer('Tile Layer 1');
 
         layer.resizeWorld();
 
