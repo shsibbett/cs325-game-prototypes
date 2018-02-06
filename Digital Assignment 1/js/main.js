@@ -11,11 +11,11 @@ window.onload = function () {
     // All loading functions will typically all be found inside "preload()".
 
 
+
     var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render });
 
     function preload() {
 
-       // game.load.image('sky', 'assets/skies/cavern2.png');
         game.load.tilemap('map', 'assets/tilemaps/maps/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
         game.load.image('walls_1x2', 'assets/tilemaps/tiles/walls_1x2.png');
@@ -34,10 +34,8 @@ window.onload = function () {
         game.physics.startSystem(Phaser.Physics.P2JS);
 
         game.stage.backgroundColor = '#2d2d2d';
- 
 
         map = game.add.tilemap('map');
- //       game.add.sprite(0, 0, 'sky');
 
         map.addTilesetImage('ground_1x1');
         map.addTilesetImage('walls_1x2');
