@@ -37,7 +37,7 @@ window.onload = function () {
  
 
         map = game.add.tilemap('map');
-        game.add.sprite(0, 0, 'sky');
+ //       game.add.sprite(0, 0, 'sky');
 
         map.addTilesetImage('ground_1x1');
         map.addTilesetImage('walls_1x2');
