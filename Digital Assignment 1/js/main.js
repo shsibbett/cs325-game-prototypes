@@ -40,7 +40,7 @@ window.onload = function () {
         map.addTilesetImage('walls_1x2');
         map.addTilesetImage('tiles2');
 
-        layer = map.createLayer('Tile Layer 1');
+        layer = map.createLayer('Tile Layer 2');
 
         layer.resizeWorld();
 
