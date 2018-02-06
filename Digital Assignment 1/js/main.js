@@ -34,9 +34,10 @@ window.onload = function () {
         game.physics.startSystem(Phaser.Physics.P2JS);
 
         //        game.stage.backgroundColor = '#2d2d2d';
-        game.add.sprite(0, 0, 'sky');
+ 
 
         map = game.add.tilemap('map');
+        game.add.sprite(0, 0, 'sky');
 
         map.addTilesetImage('ground_1x1');
         map.addTilesetImage('walls_1x2');
