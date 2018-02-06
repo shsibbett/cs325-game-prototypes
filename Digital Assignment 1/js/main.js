@@ -3,11 +3,11 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, cr
 
 function preload() {
 
-    game.load.tilemap('map', 'assets/tilemaps/maps/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
-    game.load.image('walls_1x2', 'assets/tilemaps/tiles/walls_1x2.png');
-    game.load.image('tiles2', 'assets/tilemaps/tiles/tiles2.png');
-    game.load.image('ship', 'assets/sprites/thrust_ship2.png');
+    game.load.tilemap('map', 'assets/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('ground_1x1', 'assets/ground_1x1.png');
+    game.load.image('walls_1x2', 'assets/walls_1x2.png');
+    game.load.image('tiles2', 'assets/tiles2.png');
+    game.load.image('ship', 'assets/thrust_ship2.png');
 
 }
 
