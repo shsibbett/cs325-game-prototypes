@@ -19,7 +19,7 @@ window.onload = function () {
         game.load.tilemap('map', 'assets/tilemaps/maps/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
         game.load.image('walls_1x2', 'assets/tilemaps/tiles/walls_1x2.png');
-        game.load.image('tiles2', 'assets/tilemaps/tiles/tiles2.png');
+        game.load.image('tiles2', 'assets/tilemaps/tiles/wetstone.png');
         game.load.image('ship', 'assets/sprites/thrust_ship2.png');
 
     }
@@ -33,7 +33,7 @@ window.onload = function () {
 
         game.physics.startSystem(Phaser.Physics.P2JS);
 
-        game.stage.backgroundColor = '#000000';
+        game.stage.backgroundColor = '#2F4F4F';
 
         map = game.add.tilemap('map');
 
