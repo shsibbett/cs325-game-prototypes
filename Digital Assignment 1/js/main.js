@@ -22,6 +22,11 @@ window.onload = function () {
         game.load.image('tiles2', 'assets/tilemaps/tiles/tiles2.png');
         game.load.image('ship', 'assets/sprites/thrust_ship2.png');
         game.load.image('diamond', 'assets/sprites/diamond.png');
+        game.load.audio('explosion', 'assets/audio/SoundEffects/explosion.mp3');
+        game.load.audio('pickup', 'assets/audio/SoundEffects/p-ping.mp3');
+        game.load.audio('music', 'assets/audio/sd-ingame1.wav');
+
+        // all assets from phaser
 
     }
 
@@ -30,11 +35,20 @@ window.onload = function () {
     var layer;
     var cursors;
     var diamond;
+
     var text;
+
+    var explosion;
+    var pickup;
+    var music;
+
+    var crashed;
+    var won;
 
     function create() {
 
         game.physics.startSystem(Phaser.Physics.P2JS);
+      
 
         game.stage.backgroundColor = '#181818';
 
@@ -48,35 +62,30 @@ window.onload = function () {
 
         layer.resizeWorld();
 
-        //  Set the tiles for collision.
-        //  Do this BEFORE generating the p2 bodies below.
         map.setCollisionBetween(1, 12);
 
-        //  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
-        //  This call returns an array of body objects which you can perform addition actions on if
-        //  required. There is also a parameter to control optimising the map build.
         game.physics.p2.convertTilemap(map, layer);
 
         ship = game.add.sprite(200, 200, 'ship');
         game.physics.p2.enable(ship);
+        //ship.enableBody = true;
 
         diamond = game.add.sprite(1200, 400, 'diamond');
-        //        diamond.enableBody = true;
-        game.physics.p2.enable(diamond);
-        //diamond.body.onBeginContact.add(blockHit, this);
+        diamond.enableBody = true;
 
         game.camera.follow(ship);
 
-        //  By default the ship will collide with the World bounds,
-        //  however because you have changed the size of the world (via layer.resizeWorld) to match the tilemap
-        //  you need to rebuild the physics world boundary as well. The following
-        //  line does that. The first 4 parameters control if you need a boundary on the left, right, top and bottom of your world.
-        //  The final parameter (false) controls if the boundary should use its own collision group or not. In this case we don't require
-        //  that, so it's set to false. But if you had custom collision groups set-up then you would need this set to true.
         game.physics.p2.setBoundsToWorld(true, true, true, true, false);
 
-        //  Even after the world boundary is set-up you can still toggle if the ship collides or not with this:
         //ship.body.collideWorldBounds = false;
+
+        explosion = game.add.audio('explosion');
+        pickup = game.add.audio('pickup');
+        music = game.add.audio('music');
+        music.play();
+
+        crashed = 'false';
+        won = 'false';
 
         cursors = game.input.keyboard.createCursorKeys();
 
@@ -100,10 +109,16 @@ window.onload = function () {
         else if (cursors.down.isDown) {
             ship.body.reverse(400);
         }
+        
+        // from phaser examples: http://phaser.io/examples/v2/sprites/overlap-without-physics
+        if (checkOverlap(ship, diamond)) {
+            collectDiamond(ship, diamond);
 
-        //if (ship.world.x = diamond.world.x - 20 || ship.world.x >= diamond.world.x + 20) {
-        //    diamond.kill();
-        //}
+            if (won === 'false') {
+                pickup.play();
+            }
+            won = 'true';
+        }
 
         
         if (ship.world.x <= 50 || ship.world.x >= 1545 || ship.world.y <= 50 || ship.world.y >= 525) {
@@ -122,7 +137,22 @@ window.onload = function () {
             text.fill = '#FF0000';
 
             ship.kill();
+            music.pause();
+
+            if (crashed === 'false') {
+                explosion.play();
+            }
+            crashed = 'true';
         }
+
+    }
+
+    function checkOverlap(spriteA, spriteB) {
+
+        var boundsA = spriteA.getBounds();
+        var boundsB = spriteB.getBounds();
+
+        return Phaser.Rectangle.intersects(boundsA, boundsB);
 
     }
 
@@ -142,32 +172,9 @@ window.onload = function () {
         text.stroke = '#000000';
         text.strokeThickness = 6;
         text.fill = '#FF0000';
+
+        music.pause();
     }
-
-    //function blockHit(body, bodyB, shapeA, shapeB, equation) {
-
-    //    //  The block hit something.
-    //    //  
-    //    //  This callback is sent 5 arguments:
-    //    //  
-    //    //  The Phaser.Physics.P2.Body it is in contact with. *This might be null* if the Body was created directly in the p2 world.
-    //    //  The p2.Body this Body is in contact with.
-    //    //  The Shape from this body that caused the contact.
-    //    //  The Shape from the contact body.
-    //    //  The Contact Equation data array.
-    //    //  
-    //    //  The first argument may be null or not have a sprite property, such as when you hit the world bounds.
-    //    if (body) {
-    //        bodyB.kill();
-    //        this.kill();
-    //    }
-    //    else {
-    //        body.kill();
-    //        bodyB.kill();
-    //        this.kill();
-    //    }
-
-    //}
    
     function render() {
 
