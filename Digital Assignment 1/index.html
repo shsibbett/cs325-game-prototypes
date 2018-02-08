@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Digital Assignment 1</title>
+    <title>Excavation</title>
     <script src="js/phaser.js"></script>
     <script src="js/main.js"></script>
 
@@ -22,72 +22,91 @@ body
 <body>
 <div id="game"></div>
 <div id="readme">
-<h2>Digital Assignment 1</h2>
+<h2>Extraction</h2>
 
 <ul>
 <li><strong>Originality:</strong>
-What is original about your game?
+    While most 2-D side-scrolling space games involve the player shooting down enemies and obstacles and collecting power-ups, this game removes
+    all that needless excitement and tasks the player with collecting a single item!
 </li>
 
 <li><strong>Technical Merit:</strong>
-What is interesting about your game technology?
+    The game runs smoothly without any gitters or bugs (that I know of).
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
-What did you learn from this prototype?
-What was the easiest or hardest part of making it?
+    I learned the basics of Phaser and how to make a game in general. The easiest part was changing the background color of the Phaser example I chose.
+    The hardest part was trying to figure how to do overlap detection using p2 physics.
 </li>
 
 <li><strong>Prototype Assets:</strong>
-Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
+    I borrowed assets from Phaser: collision_test.json, ground_1x1.png, walls_1x2.png, tiles2.png, thrust_ship.png, diamond.png, explosion.mp3,
+    p-ping.mp3, and sd-ingame1.wav.
 <ul>
-<li>Bouncing Phaser image: <a href="https://phaser.io/download/logo">Phaser logo</a></li>
+<li><a href="https://github.com/photonstorm/phaser-examples/tree/master/examples/assets">Phaser example assets</a></li>
 </ul>
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
-Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
+    This game strongly resembles the Phaser tilemap example. I also used code from the text stroke example for putting text on the game screen and code
+    from the overlap without physics example to check when a sprite was overlapping another sprite.
+<ul>
+<li><a href="http://phaser.io/examples/v2/p2-physics/tilemap">Tilemap</a></li>
+<li><a href="http://phaser.io/examples/v2/text/text-stroke">Text Stroke</a></li>
+<li><a href="http://phaser.io/examples/v2/sprites/overlap-without-physics">Overlap Without Physics</a></li>
+</ul>
 </li>
 
 <li><strong>High Concept:</strong>
-A one-sentence summary of your game.
+    You are a geologist looking for a rare jewel in a cave on an unnamed planet.
 </li>
 
 <li><strong>Theme:</strong>
-State which of the Storymatic themes you used.
+    I used the geologist theme.
 </li>
 
 <li><strong>Mandated Variety:</strong>
-State which input, randomness, genre, and play style you used in this prototype.
+    I used the 2-D side-scrolling genre. The play style is similar to Asteroids in the way that the ship moves.
 </li>
 
 <li><strong>Prototype Goal:</strong>
-What game mechanic is this prototype evaluating?
+    This prototype evaluates the mechanic of being able to collide with certain objects while having to avoid others. It also evaluates the
+    mechanic of 'collecting' an item.
 </li>
 
 <li><strong>Player Experience Goals:</strong>
-What experience do you want players to have when playing your game?
+    I want players to have a fun time avoiding fatal collisions and getting the jewel. Some frustation is to be expected upon crashing.
 </li>
 
 <li><strong>Gameplay:</strong>
-A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
+<ul>
+<li>Forward - Up Arrow</li>
+<li>Backward - Down Arrow</li>
+<li>Rotate Left - Left Arrow</li>
+<li>Rotate Right - Right Arrow</li>
+<li>Make it to the end of the cave and get the jewel.</li>
+<li>Avoid the walls or you will crash.</li>
+<li>Rocks are safe to crash into.</li>
+</ul>
 </li>
 
 <li><strong>Strategies:</strong>
-What player strategies do you expect will be effective at playing this game?
+    As the player can touch the rocks in the center of the map and cannot touch the walls, an effective strategy to win fast would involve rocketing
+    into rocks while taking it slow near walls.
 </li>
 
 <li><strong>Story/Setting/Premise:</strong>
-A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
-How will the dramatic tension interact with the gameplay tension?
+    You are a geologist who has been searching several planets for a rare jewel known as rarium that you hope will elevate your status among your 
+    peers back on Earth. This obsessive search has taken over your entire life, and you begin to lose hope that you will ever find what you are 
+    searching for when you come across a cave on small, nondescript planet...
 </li>
 
 <li><strong>Target Audience:</strong>
-A single sentence that describes the demographic you're trying to reach.
+    This game is meant for everyone of all ages.
 </li>
 
 <li><strong>Play Time:</strong>
-How long does your game take to play?
+    Depending on the skill of the player, play time can be between 15 seconds to a full minute.
 </li>
 
 </ul>

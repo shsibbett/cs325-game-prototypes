@@ -20,7 +20,7 @@ window.onload = function () {
         game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
         game.load.image('walls_1x2', 'assets/tilemaps/tiles/walls_1x2.png');
         game.load.image('tiles2', 'assets/tilemaps/tiles/tiles2.png');
-        game.load.image('ship', 'assets/sprites/thrust_ship2.png');
+        game.load.image('ship', 'assets/sprites/thrust_ship3.png');
         game.load.image('diamond', 'assets/sprites/diamond.png');
         game.load.audio('explosion', 'assets/audio/SoundEffects/explosion.mp3');
         game.load.audio('pickup', 'assets/audio/SoundEffects/p-ping.mp3');
@@ -66,7 +66,7 @@ window.onload = function () {
 
         game.physics.p2.convertTilemap(map, layer);
 
-        ship = game.add.sprite(200, 200, 'ship');
+        ship = game.add.sprite(75, 290, 'ship');
         game.physics.p2.enable(ship);
         //ship.enableBody = true;
 
@@ -147,6 +147,7 @@ window.onload = function () {
 
     }
 
+    // from phaser examples: http://phaser.io/examples/v2/sprites/overlap-without-physics
     function checkOverlap(spriteA, spriteB) {
 
         var boundsA = spriteA.getBounds();
@@ -160,7 +161,7 @@ window.onload = function () {
         diamond.kill();
 
         // from phaser examples: https://phaser.io/examples/v2/text/text-stroke
-        text = game.add.text(game.width / 2, game.height / 2, 'You won!');
+        text = game.add.text(game.width / 2, game.height / 2, 'Success!');
         text.align = 'center';
         text.fixedToCamera = true;
         text.anchor.setTo(0.5, 0.5);
