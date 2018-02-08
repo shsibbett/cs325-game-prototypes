@@ -122,22 +122,27 @@ window.onload = function () {
 
         
         if (ship.world.x <= 50 || ship.world.x >= 1545 || ship.world.y <= 50 || ship.world.y >= 525) {
+            game.world.remove(text);
             // from phaser examples: https://phaser.io/examples/v2/text/text-stroke
-            text = game.add.text(game.width / 2, game.height / 2, 'You crashed!');
-            text.align = 'center';
-            text.fixedToCamera = true;
-            text.anchor.setTo(0.5, 0.5);
 
-            text.font = 'Arial Black';
-            text.fontSize = 68;
-            text.fontWeight = 'bold';
+            if (won === 'false') {
+                text = game.add.text(game.width / 2, game.height / 2, 'You crashed!');
+                text.align = 'center';
+                text.fixedToCamera = true;
+                text.anchor.setTo(0.5, 0.5);
 
-            text.stroke = '#000000';
-            text.strokeThickness = 6;
-            text.fill = '#FF0000';
+                text.font = 'Arial Black';
+                text.fontSize = 68;
+                text.fontWeight = 'bold';
 
-            ship.kill();
-            music.pause();
+                text.stroke = '#000000';
+                text.strokeThickness = 6;
+                text.fill = '#FF0000';
+            }
+
+           ship.kill();
+           music.pause();
+            
 
             if (crashed === 'false') {
                 explosion.play();
