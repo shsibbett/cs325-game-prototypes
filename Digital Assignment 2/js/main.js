@@ -21,6 +21,11 @@ window.onload = function() {
       //  game.load.image('background', 'assets/background2.png');
     
     }
+
+    //used starstruck for sprite/tilemap stuff http://phaser.io/examples/v2/games/starstruck#gv
+    //used Tiled to make map http://www.mapeditor.org/
+    //used https://opengameart.org/content/pixel-tileset-0 for tileset
+    //used phaser assets
     
     var map;
     var tileset;
@@ -42,9 +47,6 @@ window.onload = function() {
     
         game.stage.backgroundColor = '#000000';
     
-        //bg = game.add.tileSprite(0, 0, 800, 600, 'background');
-        //bg.fixedToCamera = true;
-    
         map = game.add.tilemap('DA2');
     
         map.addTilesetImage('ground_tileset', 'tiles');
@@ -58,13 +60,6 @@ window.onload = function() {
 
         map.setCollisionBetween(1, 3000, true, 'GroundLayer');
 
-
-        //layer = map.createLayer('Tile Layer 1');
-    
-        //  Un-comment this on to see the collision tiles
-        //layer.debug = true;
-    
-        //layer.resizeWorld();
         groundlayer.resizeWorld();
     
         game.physics.arcade.gravity.y = 150;
