@@ -14,10 +14,10 @@ window.onload = function() {
 
     function preload() {
     
-        game.load.tilemap('DA2', 'assets/DA2.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap('DA2', 'assets/DA2v2.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('tiles', 'assets/tileset12345.png');
         game.load.image('sky', 'assets/sky4.png');
-        game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+        game.load.spritesheet('chicken', 'assets/jODGJn4.png', 48, 48);
       //  game.load.image('background', 'assets/background2.png');
     
     }
@@ -25,6 +25,7 @@ window.onload = function() {
     //used starstruck for sprite/tilemap stuff http://phaser.io/examples/v2/games/starstruck#gv
     //used Tiled to make map http://www.mapeditor.org/
     //used https://opengameart.org/content/pixel-tileset-0 for tileset
+    //chicken sprite: https://forums.rpgmakerweb.com/index.php?threads/whtdragons-animals-and-running-horses-now-with-more-dragons.53552/
     //used phaser assets
     
     var map;
@@ -39,7 +40,6 @@ window.onload = function() {
     var jumpTimer = 0;
     var cursors;
     var jumpButton;
-    var bg;
     
     function create() {
     
@@ -52,8 +52,6 @@ window.onload = function() {
         map.addTilesetImage('ground_tileset', 'tiles');
         map.addTilesetImage('sky', 'sky');
     
-        //map.setCollisionByExclusion([ 13, 14, 15, 16, 46, 47, 48, 49, 50, 51 ]);
-    
         backgroundlayer = map.createLayer('BackgroundLayer');
         grasslayer = map.createLayer('GrassLayer');
         groundlayer = map.createLayer('GroundLayer');
@@ -64,7 +62,8 @@ window.onload = function() {
     
         game.physics.arcade.gravity.y = 150;
     
-        player = game.add.sprite(1, 3100, 'dude');
+        player = game.add.sprite(1, 3100, 'chicken');
+        //player.frame = 3;
         game.physics.arcade.enable(player);
         player.body.gravity.y = 350;
     
@@ -72,9 +71,9 @@ window.onload = function() {
         player.body.collideWorldBounds = true;
         player.body.setSize(20, 32, 5, 16);
     
-        player.animations.add('left', [0, 1, 2, 3], 10, true);
-        player.animations.add('turn', [4], 20, true);
-        player.animations.add('right', [5, 6, 7, 8], 10, true);
+        player.animations.add('left', [12, 13, 14], 10, true);
+        player.animations.add('turn', [1], 20, true);
+        player.animations.add('right', [24, 25, 26], 10, true);
     
         game.camera.follow(player);
     
@@ -111,21 +110,21 @@ window.onload = function() {
         }
         else
         {
-            if (facing != 'idle')
-            {
-                player.animations.stop();
+             if (facing != 'idle')
+             {
+                 player.animations.stop();
     
-                if (facing == 'left')
-                {
-                    player.frame = 0;
-                }
-                else
-                {
-                    player.frame = 5;
-                }
+        //         if (facing == 'left')
+        //         {
+        //             player.frame = 0;
+        //         }
+        //         else
+        //         {
+        //             player.frame = 5;
+        //         }
     
-                facing = 'idle';
-            }
+        //         facing = 'idle';
+             }
         }
         
         if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer)
