@@ -110,7 +110,14 @@ window.onload = function() {
         for (var i = 0; i < 12; i++)
         {
             var egg = eggs.create(game.world.randomX - 50, game.world.randomY - 30, 'egg');
-    
+            
+            if (egg.world.x < 10) {
+                egg.world.x += 20;
+            }
+
+            if (egg.world.y < 10) {
+                egg.world.y += 20;
+            }
             egg.body.gravity.y = 200;
             egg.body.bounce.y = 0.3;
         }
@@ -125,10 +132,6 @@ window.onload = function() {
         cluck = game.add.audio('cluck');
         win = game.add.audio('win');
         game_over = game.add.audio('game over');
-
-        //custom timer code from http://phaser.io/examples/v2/time/basic-looped-event
-        game.time.events.loop(Phaser.Timer.SECOND, updateTimeLeft, this);
-
     
         //cursors = game.input.keyboard.createCursorKeys();
         w = game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -139,7 +142,12 @@ window.onload = function() {
 
         updateControls();
 
-        game.time.events.loop(15000, updateControls, this);
+        //custom timer code from http://phaser.io/examples/v2/time/basic-looped-event
+        game.time.events.loop(Phaser.Timer.SECOND, updateTimeLeft, this);
+
+        if (success === false && failed === false) {
+            game.time.events.loop(15000, updateControls, this);
+        }
         
         lost_woods.play();
     }
@@ -155,7 +163,7 @@ window.onload = function() {
 
         if (eggsToCollect === 0) {
             player.kill();
-            lost_woods.kill();
+            lost_woods.pause();
 
             text = game.add.text(game.width / 2, game.height / 2, 'You saved the eggs!');
             text.align = 'center';
@@ -178,7 +186,7 @@ window.onload = function() {
 
         if (timeLeft === 0) {
             player.kill();
-            lost_woods.kill();
+            lost_woods.pause();
 
             text = game.add.text(game.width / 2, game.height / 2, 'You failed!');
             text.align = 'center';
