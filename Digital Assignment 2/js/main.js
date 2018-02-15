@@ -19,19 +19,12 @@ window.onload = function() {
         game.load.image('sky', 'assets/sky4.png');
         game.load.spritesheet('chicken', 'assets/jODGJn4.png', 48, 48);
         game.load.image('egg', 'assets/egg.png');
+        game.load.audio('lost_woods', 'assets/lostwoods.mp3');
         game.load.audio('cluck', 'assets/cluck.mp3');
+        game.load.audio('win', 'assets/win.mp3');
         game.load.audio('game over', 'assets/game over.mp3');
     
     }
-
-    //used starstruck for sprite/tilemap stuff http://phaser.io/examples/v2/games/starstruck#gv
-    //used Tiled to make map http://www.mapeditor.org/
-    //used https://opengameart.org/content/pixel-tileset-0 for tileset
-    //chicken sprite: https://forums.rpgmakerweb.com/index.php?threads/whtdragons-animals-and-running-horses-now-with-more-dragons.53552/
-    //egg sprite: http://photobucket.com/gallery/user/alana553/media/bWVkaWFJZDoxMjc4MTA4MTc=/?ref=1
-    //cluck sound: https://www.youtube.com/watch?v=xuYsNML2QgU
-    //crow sound: https://www.youtube.com/watch?v=rGIBE12-xKY
-    //used phaser assets
     
     var map;
     
@@ -49,16 +42,28 @@ window.onload = function() {
     var timeLeftText;
     var text;
 
+    var lost_woods;
     var cluck;
+    var win;
     var game_over;
 
     var timer;
 
+    var success = false;
     var failed = false;
+
+    var inputArray = [];
 
     var facing = 'left';
     var jumpTimer = 0;
-    var cursors;
+
+    var w;
+    var a;
+    var s;
+    var d;
+    var spacebar;
+    var left;
+    var right;
     var jumpButton;
     
     function create() {
@@ -104,9 +109,9 @@ window.onload = function() {
     
         for (var i = 0; i < 12; i++)
         {
-            var egg = eggs.create(game.world.randomX - 30, game.world.randomY - 30, 'egg');
+            var egg = eggs.create(game.world.randomX - 50, game.world.randomY - 30, 'egg');
     
-            egg.body.gravity.y = 300;
+            egg.body.gravity.y = 200;
             egg.body.bounce.y = 0.3;
         }
 
@@ -115,15 +120,28 @@ window.onload = function() {
         timeLeftText = game.add.text(16, 52, 'Time remaining: 120', { fontSize: '28px', fill: '#000' });
         timeLeftText.fixedToCamera = true;
         
+        lost_woods = game.add.audio('lost_woods');
+        lost_woods.loop = true;
         cluck = game.add.audio('cluck');
+        win = game.add.audio('win');
         game_over = game.add.audio('game over');
 
         //custom timer code from http://phaser.io/examples/v2/time/basic-looped-event
         game.time.events.loop(Phaser.Timer.SECOND, updateTimeLeft, this);
+
     
-        cursors = game.input.keyboard.createCursorKeys();
-        jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    
+        //cursors = game.input.keyboard.createCursorKeys();
+        w = game.input.keyboard.addKey(Phaser.Keyboard.W);
+        a = game.input.keyboard.addKey(Phaser.Keyboard.A);
+        s = game.input.keyboard.addKey(Phaser.Keyboard.S);
+        d = game.input.keyboard.addKey(Phaser.Keyboard.D);
+        spacebar = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+        updateControls();
+
+        game.time.events.loop(15000, updateControls, this);
+        
+        lost_woods.play();
     }
     
     function update() {
@@ -137,6 +155,7 @@ window.onload = function() {
 
         if (eggsToCollect === 0) {
             player.kill();
+            lost_woods.kill();
 
             text = game.add.text(game.width / 2, game.height / 2, 'You saved the eggs!');
             text.align = 'center';
@@ -150,10 +169,16 @@ window.onload = function() {
             text.stroke = '#000000';
             text.strokeThickness = 6;
             text.fill = '#FFFFFF';
+
+            if (success === false) {
+                win.play();
+            }
+            success = true;
         }
 
         if (timeLeft === 0) {
             player.kill();
+            lost_woods.kill();
 
             text = game.add.text(game.width / 2, game.height / 2, 'You failed!');
             text.align = 'center';
@@ -175,7 +200,7 @@ window.onload = function() {
             failed = true;
         }
     
-        if (cursors.left.isDown)
+        if (left.isDown)
         {
             player.body.velocity.x = -200;
     
@@ -185,7 +210,7 @@ window.onload = function() {
                 facing = 'left';
             }
         }
-        else if (cursors.right.isDown)
+        else if (right.isDown)
         {
             player.body.velocity.x = 200;
     
@@ -225,6 +250,42 @@ window.onload = function() {
             timeLeft--;
         }
         timeLeftText.text = 'Time remaining: ' + timeLeft;
+    }
+
+    function updateControls() {
+        populateArray();
+
+        // code from https://stackoverflow.com/questions/12987719/javascript-how-to-randomly-sample-items-without-replacement
+        var randomIndex = Math.floor(Math.random()*inputArray.length);
+        left = inputArray[randomIndex];
+        inputArray.splice(randomIndex, 1)[0];
+
+        randomIndex = Math.floor(Math.random()*inputArray.length);
+        right = inputArray[randomIndex];
+        inputArray.splice(randomIndex, 1)[0];
+
+        randomIndex = Math.floor(Math.random()*inputArray.length);
+        jumpButton = inputArray[randomIndex];
+
+        var message = game.add.text(500, 16, 'Controls swapped!', { fontSize: '28px', fill: '#000' });
+        message.fixedToCamera = true;
+        message.alpha = 1;
+        
+        //alpha text tween code from https://phaser.io/examples/v2/tweens/alpha-text
+        var fadeIn = game.add.tween(message).to( { alpha: 1 }, 1000, "Linear", true);
+        var fadeOut = game.add.tween(message).to( { alpha: 0 }, 1000, "Linear", true);
+        
+        //tween chain code from https://phaser.io/examples/v2/tweens/chained-tweens
+        fadeIn.chain(fadeOut);
+        fadeIn.start();
+    }
+    
+    function populateArray() {
+        inputArray[0] = w;
+        inputArray[1] = a;
+        inputArray[2] = s;
+        inputArray[3] = d;
+        inputArray[4] = spacebar;
     }
     
     function render () {
