@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Digital Assignment 3</title>
+    <script src="js/phaser.js"></script>
+    <script src="js/main.js"></script>
+
+<style>
+body
+{
+    color: #777;
+    font-family: "Avenir", Verdana, sans-serif;
+}
+#readme
+{
+    margin-top: 10px;
+}
+</style>
+
+</head>
+<body>
+<div id="game"></div>
+<div id="readme">
+<h2>Digital Assignment 3</h2>
+
+<ul>
+<li><strong>Originality:</strong>
+What is original about your game?
+<ul>
+    <li>In this platformer, the player must deal with a control scheme that is randomized every 15 seconds.</li>
+    <li>This forces the player to think on their feet and react quickly to change.</li>
+</ul>
+</li>
+
+<li><strong>Technical Merit:</strong>
+What is interesting about your game technology?
+<ul>
+    <li>All the possible controls (WASD and the spacebar) into an array that is randomly selected from without replacement to assign the input mapping.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Postmortem:</strong>
+What did you learn from this prototype?
+What was the easiest or hardest part of making it?
+<ul>
+    <li>I learned how to use Tiled to make a tilemap from tilesets.</li>
+    <li>I also learned how to animate a sprite using a spritesheet.</li>
+    <li>The easiest part was randomizing the controls.</li>
+    <li>The hardest part was creating the tilemap and figuring out how to make sure the player collided with the dirt sections of the tileset and not the grass.</li>
+    <li>It was also pretty difficult to make sure that the eggs (which are generated in random locations on the map) were in the bounds of where the player could go.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Assets:</strong>
+Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
+<ul>
+    <li><a href="https://forums.rpgmakerweb.com/index.php?threads/whtdragons-animals-and-running-horses-now-with-more-dragons.53552/">Chicken</a> sprite</li>
+    <li><a href="https://en.wikipedia.org/wiki/File:Red_x.svg">Red X</a>image</li>
+    <li><a href="https://sergiumatei.artstation.com/projects/LWYvk">Door</a>sprite</li>
+    <li><a href="https://www.youtube.com/watch?v=-uInmFU6JkU">Lost Woods</a> - Legend of Zelda: Ocarina of Time</li>
+    <li><a href="https://www.youtube.com/watch?v=xuYsNML2QgU">Pick-up</a> sound effect</li>
+    <li><a href="https://www.youtube.com/watch?v=WwKuP9QS1N0">Win</a> sound effect</li>
+    <li><a href="https://www.youtube.com/watch?v=rGIBE12-xKY">Game Over</a> sound effect</li>
+    <li><a href="http://www.mapeditor.org/">Tiled</a> was used to create the tilemap.</li>
+    <li><a href="https://opengameart.org/content/pixel-tileset-0">Tileset</a> I used for the unseen walls.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Closest Other Game:</strong>
+Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
+<ul> 
+    <li>The code for player movement was taken from the Phaser <a href="http://phaser.io/examples/v2/games/starstruck#gv">Starstruck</a> example.</li>
+    <li>I used code from the Phaser <a href="https://phaser.io/examples/v2/arcade-physics/ship-trail">Ship Trail</a> example to generate the dot trail.</li>
+    <li>I used both the <a href="https://phaser.io/examples/v2/tweens/alpha-text">Alpha Text</a> and <a href="https://phaser.io/examples/v2/tweens/chained-tweens">Chained Tweens</a> examples from Phaser for the "Checkpoint reached!" text.</li>
+</ul>
+</li>
+
+<li><strong>High Concept:</strong>
+A one-sentence summary of your game.
+<ul>
+    <li>You are a chicken who forgets how to move every 15 seconds and must collect a dozen eggs before time runs out.</li>
+</ul>
+</li>
+
+<li><strong>Theme:</strong>
+State which of the Storymatic themes you used.
+<ul>
+    <li>I used the chicken theme.</li>
+</ul>
+</li>
+
+<li><strong>Mandated Variety:</strong>
+State which input, randomness, genre, and play style you used in this prototype.
+<ul>
+    <li>The player uses WASD and the spacebar to move.</li>
+    <li>The controls had an element of randomness.</li>
+    <li>The game is a 2D vertical scrolling platformer.</li>
+    <li>The play style is simple, yet challenging as the player must relearn the controls every 15 seconds.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Goal:</strong>
+What game mechanic is this prototype evaluating?
+<ul>
+    <li>This prototype is evaluating the randomized control mechanic.</li>
+</ul>
+</li>
+
+<li><strong>Player Experience Goals:</strong>
+What experience do you want players to have when playing your game?
+<ul>
+    <li>Players should have a fun experience trying to figure out the controls and acheiving the goal.</li>
+    <li>Players should also experience the challenge of having the controls change every 15 seconds; rage and frustration are to be expected.</li>
+    <li>Ultimately, this game should encourage multiple plays due to the challenge and random element.</li>
+</ul>
+</li>
+
+<li><strong>Gameplay:</strong>
+A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
+<ul>
+    <li>Use WASD and the spacebar to move and jump; the mapping is random, so figure out which keys perform which actions quickly.</li>
+    <li>The mapping is randomized every 15 seconds.</li>
+    <li>The player can move along or jump onto the various platforms.</li>
+    <li>The player's goal is collect all 12 eggs before time runs out. They have two minutes.</li>
+</ul>
+</li>
+
+<li><strong>Strategies:</strong>
+What player strategies do you expect will be effective at playing this game?
+<ul> 
+    <li>Pay attention to when the 'Controls swapped!' message appears.</li>
+    <li>Learn the new controls quickly.</li>
+    <li>If possible, arrange your hand so that the fingers you normally use to move and jump are touching the correct keys; this will help to trick your brain.</li>
+</ul>
+</li>
+
+<li><strong>Story/Setting/Premise:</strong>
+A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
+How will the dramatic tension interact with the gameplay tension?
+<ul>
+    <li>You are a simple chicken living in the mountainous countryside on Partem Farm who suffers from locomotiphrenia, a condition where you forget how to 
+        move every 15 seconds. One day, a thunderous wind came over the farm and swept away all 12 of the roost's chicken eggs towards the Disjoint Cliffs. As the 
+        only rooster on the farm, it is your job to rescue the eggs before they come to great harm.</li>
+</ul>
+</li>
+
+<li><strong>Target Audience:</strong>
+A single sentence that describes the demographic you're trying to reach.
+<ul>
+    <li>I am trying to reach the type of players that like a challenge. It's a plus if they like chickens.</li>
+</ul>
+</li>
+
+<li><strong>Play Time:</strong>
+How long does your game take to play?
+<ul>
+    <li> Players have two minutes to collect all of the eggs. Due to the randomness of the controls, they are expected to take most of the time to complete the goal.</li>
+</ul>
+</li>
+
+</ul>
+
+</div>
+</body>
+</html>
