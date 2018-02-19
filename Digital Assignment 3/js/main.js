@@ -16,15 +16,13 @@ window.onload = function() {
     
         game.load.tilemap('DA3', 'assets/DA3.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('walls', 'assets/tileset12345.png');
-        game.load.spritesheet('player', 'assets/dude.png', 32, 48);
+        game.load.spritesheet('player', 'assets/MainGuySpriteSheet.png', 41.3, 36);
         game.load.image('x', 'assets/red x.png', 16, 16);
-        game.load.image('dot', 'assets/orb-green.png');
         game.load.image('door', 'assets/doorv2.png');
         game.load.image('chunk', 'assets/chunk.png');
         // game.load.audio('lost_woods', 'assets/lostwoods.mp3');
-        // game.load.audio('cluck', 'assets/cluck.mp3');
-        // game.load.audio('win', 'assets/win.mp3');
-        // game.load.audio('game over', 'assets/game over.mp3');
+        game.load.audio('splat', 'assets/splat.mp3');
+        game.load.audio('exit', 'assets/exit.mp3');
     
     }
     
@@ -39,15 +37,16 @@ window.onload = function() {
     var deathText;
 
     //var lost_woods;
+    var splat;
     //var win;
-    //var game_over;
+    var exit;
 
     var checkpoint1 = false;
     var checkpoint2 = false;
     var checkpoint3 = false;
     var success = false;
 
-    var facing = 'left';
+    var facing = 'down';
     
     var cursors;
     
@@ -90,8 +89,8 @@ window.onload = function() {
         
         //lost_woods = game.add.audio('lost_woods');
         //lost_woods.loop = true;
-        //cluck = game.add.audio('cluck');
-        //win = game.add.audio('win');
+        splat = game.add.audio('splat');
+        exit = game.add.audio('exit');
         //game_over = game.add.audio('game over');
     
         cursors = game.input.keyboard.createCursorKeys();
@@ -115,14 +114,21 @@ window.onload = function() {
             checkpoint1 = true;
         }
         
-        if (checkpoint2 === false && player.world.x < 430 && player.world.x > 370 && player.world.y < 630 && player.world.y > 570) {
+        if (checkpoint2 === false && player.world.x < 450 && player.world.x > 350 && player.world.y < 650 && player.world.y > 550) {
             checkpoint();
             checkpoint2 = true;
         }
 
-        if (checkpoint3 === false && player.world.x < 930 && player.world.x > 900 && player.world.y < 32 && player.world.y > 2) {
+        if (checkpoint3 === false && player.world.x < 965 && player.world.x > 865 && player.world.y < 67 && player.world.y > 0) {
             checkpoint();
             checkpoint3 = true;
+        }
+
+        if (success === false && player.world.x < 984 && player.world.x > 884 && player.world.y < 750 && player.world.y > 650) {
+            exit.play();
+            
+            exit.onStop.add(closeDoor, this);
+            success = true;
         }
 
         if (cursors.left.isDown)
@@ -148,10 +154,22 @@ window.onload = function() {
         else if (cursors.up.isDown)
         {
             player.body.velocity.y = -200;
+
+            if (facing != 'up')
+            {
+                player.animations.play('up');
+                facing = 'up';
+            }
         }
         else if (cursors.down.isDown)
         {
             player.body.velocity.y = 200;
+
+            if (facing != 'down')
+            {
+                player.animations.play('down');
+                facing = 'down';
+            }
         }
         else
         {
@@ -183,9 +201,11 @@ window.onload = function() {
         player.body.collideWorldBounds = true;
         player.body.setSize(24, 24, 5, 16);
     
-        player.animations.add('left', [0, 1, 2, 3], 10, true);
-        player.animations.add('turn', [4], 20, true);
-        player.animations.add('right', [5, 6, 7, 8], 10, true);
+        player.animations.add('left', [9, 10, 11], 5, true);
+        //player.animations.add('turn', [4], 20, true);
+        player.animations.add('right', [3, 4, 5], 5, true);
+        player.animations.add('up', [6, 7, 8], 5, true);
+        player.animations.add('down', [0, 1, 2], 5, true);
     
         game.camera.follow(player);
     }
@@ -203,6 +223,7 @@ window.onload = function() {
             x = game.add.sprite(player.world.x+2, player.world.y, 'x');
         }
         player.kill();
+        splat.play();
 
         resetPlayer();
         updateDeaths();
@@ -239,12 +260,10 @@ window.onload = function() {
         text.stroke = '#000000';
         text.strokeThickness = 6;
         text.fill = '#FFFFFF';
+    }
 
-        if (success === false) {
-            //win.play();
-        }
-        success = true;
-        
+    function closeDoor(exit) {
+        door = game.add.sprite(934, 700, 'door');
     }
 
     function updateDeaths() {

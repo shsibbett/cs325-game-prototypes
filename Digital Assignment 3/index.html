@@ -28,15 +28,17 @@ body
 <li><strong>Originality:</strong>
 What is original about your game?
 <ul>
-    <li>In this platformer, the player must deal with a control scheme that is randomized every 15 seconds.</li>
-    <li>This forces the player to think on their feet and react quickly to change.</li>
+    <li>The player must escape from a room without touching the walls.</li>
+    <li>The walls are invisible.</li>
+    <li>A red x is left behind wherever a player touches a wall.</li>
+    <li>The player leaves behind a white trail showing where they have been to help them get through the room.</li>
 </ul>
 </li>
 
 <li><strong>Technical Merit:</strong>
 What is interesting about your game technology?
 <ul>
-    <li>All the possible controls (WASD and the spacebar) into an array that is randomly selected from without replacement to assign the input mapping.</li>
+    <li>The trail that shows where the player has walked safely before is generated using bit map data.</li>
 </ul>
 </li>
 
@@ -44,24 +46,22 @@ What is interesting about your game technology?
 What did you learn from this prototype?
 What was the easiest or hardest part of making it?
 <ul>
-    <li>I learned how to use Tiled to make a tilemap from tilesets.</li>
-    <li>I also learned how to animate a sprite using a spritesheet.</li>
-    <li>The easiest part was randomizing the controls.</li>
-    <li>The hardest part was creating the tilemap and figuring out how to make sure the player collided with the dirt sections of the tileset and not the grass.</li>
-    <li>It was also pretty difficult to make sure that the eggs (which are generated in random locations on the map) were in the bounds of where the player could go.</li>
+    <li>I learned how to change the visibility of sprites and how to have the player die on collision.</li>
+    <li>I also learned how to use bit maps to create a trail and how to create checkpoints for the player.</li>
+    <li>The easiest part was changing the visibility of the walls and to add red x's where the player died.</li>
+    <li>The hardest part was creating a tilemap that wasn't too hard for the player to find their way through.</li>
 </ul>
 </li>
 
 <li><strong>Prototype Assets:</strong>
 Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
 <ul>
-    <li><a href="https://forums.rpgmakerweb.com/index.php?threads/whtdragons-animals-and-running-horses-now-with-more-dragons.53552/">Chicken</a> sprite</li>
-    <li><a href="https://en.wikipedia.org/wiki/File:Red_x.svg">Red X</a>image</li>
-    <li><a href="https://sergiumatei.artstation.com/projects/LWYvk">Door</a>sprite</li>
-    <li><a href="https://www.youtube.com/watch?v=-uInmFU6JkU">Lost Woods</a> - Legend of Zelda: Ocarina of Time</li>
-    <li><a href="https://www.youtube.com/watch?v=xuYsNML2QgU">Pick-up</a> sound effect</li>
-    <li><a href="https://www.youtube.com/watch?v=WwKuP9QS1N0">Win</a> sound effect</li>
-    <li><a href="https://www.youtube.com/watch?v=rGIBE12-xKY">Game Over</a> sound effect</li>
+    <li><a href="https://opengameart.org/content/rpg-character">Guy</a> spritesheet from Curt - cjc83486</li>
+    <li><a href="https://en.wikipedia.org/wiki/File:Red_x.svg">Red X</a> image</li>
+    <li><a href="https://sergiumatei.artstation.com/projects/LWYvk">Door</a> sprite</li>
+    <li><a href="https://github.com/photonstorm/phaser-examples/tree/master/examples/assets">Chunk</a> sprite from the Ship Trail example</li>
+    <li><a href="https://www.youtube.com/watch?v=KUOfNtoJyLw">Splat</a> sound effect</li>
+    <li><a href="https://www.youtube.com/watch?v=VLMbtJCiOG4">Door opening/closing</a> sound effect</li>
     <li><a href="http://www.mapeditor.org/">Tiled</a> was used to create the tilemap.</li>
     <li><a href="https://opengameart.org/content/pixel-tileset-0">Tileset</a> I used for the unseen walls.</li>
 </ul>
@@ -73,89 +73,94 @@ Which other game most closely resembles your game? If you are borrowing code fro
     <li>The code for player movement was taken from the Phaser <a href="http://phaser.io/examples/v2/games/starstruck#gv">Starstruck</a> example.</li>
     <li>I used code from the Phaser <a href="https://phaser.io/examples/v2/arcade-physics/ship-trail">Ship Trail</a> example to generate the dot trail.</li>
     <li>I used both the <a href="https://phaser.io/examples/v2/tweens/alpha-text">Alpha Text</a> and <a href="https://phaser.io/examples/v2/tweens/chained-tweens">Chained Tweens</a> examples from Phaser for the "Checkpoint reached!" text.</li>
+    <li>Code from the <a href="https://phaser.io/examples/v2/audio/sound-complete">Sound Complete</a> Phaser example was used for reloading the door sprite after the door opening/closing sound effect.</li>
 </ul>
 </li>
 
 <li><strong>High Concept:</strong>
 A one-sentence summary of your game.
 <ul>
-    <li>You are a chicken who forgets how to move every 15 seconds and must collect a dozen eggs before time runs out.</li>
+    <li>You have been captured by a murderous psychopath and must escape.</li>
 </ul>
 </li>
 
 <li><strong>Theme:</strong>
 State which of the Storymatic themes you used.
 <ul>
-    <li>I used the chicken theme.</li>
+    <li>I used the caught theme.</li>
 </ul>
 </li>
 
 <li><strong>Mandated Variety:</strong>
 State which input, randomness, genre, and play style you used in this prototype.
 <ul>
-    <li>The player uses WASD and the spacebar to move.</li>
-    <li>The controls had an element of randomness.</li>
-    <li>The game is a 2D vertical scrolling platformer.</li>
-    <li>The play style is simple, yet challenging as the player must relearn the controls every 15 seconds.</li>
+    <li>The player uses the arrow keys to move.</li>
+    <li>There aren't really any random elements aside from how the player actions.</li>
+    <li>The game is a 2D, top-down side-scroller.</li>
+    <li>The play style is that the player must make mistakes in order to succeed and escape.</li>
 </ul>
 </li>
 
 <li><strong>Prototype Goal:</strong>
 What game mechanic is this prototype evaluating?
 <ul>
-    <li>This prototype is evaluating the randomized control mechanic.</li>
+    <li>This prototype is evaluating the mechanic that the player must die repeatedley in order to beat the game.</li>
+    <li>X's marking where the player has died, a trail of where they have been, and checkpoints were added to help the player find 
+        the exit.</li>
 </ul>
 </li>
 
 <li><strong>Player Experience Goals:</strong>
 What experience do you want players to have when playing your game?
 <ul>
-    <li>Players should have a fun experience trying to figure out the controls and acheiving the goal.</li>
-    <li>Players should also experience the challenge of having the controls change every 15 seconds; rage and frustration are to be expected.</li>
-    <li>Ultimately, this game should encourage multiple plays due to the challenge and random element.</li>
+    <li>Overall, players should have fun and feel like they have been presented with a challenge.</li>
+    <li>Hopefully, players should not experience frustration as multiple elements have been added to help them escape the room.</li>
 </ul>
 </li>
 
 <li><strong>Gameplay:</strong>
-A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
+A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise 
+explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the 
+prototype. You may include mock-up images for parts of the game not in the prototype.
 <ul>
-    <li>Use WASD and the spacebar to move and jump; the mapping is random, so figure out which keys perform which actions quickly.</li>
-    <li>The mapping is randomized every 15 seconds.</li>
-    <li>The player can move along or jump onto the various platforms.</li>
-    <li>The player's goal is collect all 12 eggs before time runs out. They have two minutes.</li>
+    <li>Use the arrow keys to move.</li>
+    <li>The player must get to the door in the bottom right corner of the room.</li>
+    <li>The player will die if they run into any of the invisible walls, or they will be sent back to the last checkpoint.</li>
 </ul>
 </li>
 
 <li><strong>Strategies:</strong>
 What player strategies do you expect will be effective at playing this game?
 <ul> 
-    <li>Pay attention to when the 'Controls swapped!' message appears.</li>
-    <li>Learn the new controls quickly.</li>
-    <li>If possible, arrange your hand so that the fingers you normally use to move and jump are touching the correct keys; this will help to trick your brain.</li>
+    <li>Use the red x's that appear when you die to avoid walls.</li>
+    <li>Use the white trail that appears when you walk to tell where it's safe to go.</li>
+    <li>If you are stuck, die as many times as you can to get a visual of where the walls are.</li>
 </ul>
 </li>
 
 <li><strong>Story/Setting/Premise:</strong>
-A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
+A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and 
+interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
 How will the dramatic tension interact with the gameplay tension?
 <ul>
-    <li>You are a simple chicken living in the mountainous countryside on Partem Farm who suffers from locomotiphrenia, a condition where you forget how to 
-        move every 15 seconds. One day, a thunderous wind came over the farm and swept away all 12 of the roost's chicken eggs towards the Disjoint Cliffs. As the 
-        only rooster on the farm, it is your job to rescue the eggs before they come to great harm.</li>
+    <li>You were only going downtown to pick up some take-out when you were knocked out suddenly. The next thing you knew, you
+        woke up in a pitch-black basement to a man speaking to you. He said that you were free to leave if you could manage to make it the
+        exit; the catch: if you touch any of the walls, you die.
+    </li>
 </ul>
 </li>
 
 <li><strong>Target Audience:</strong>
 A single sentence that describes the demographic you're trying to reach.
 <ul>
-    <li>I am trying to reach the type of players that like a challenge. It's a plus if they like chickens.</li>
+    <li>I am trying to reach players who enjoy failing over and over until they win.</li>
 </ul>
 </li>
 
 <li><strong>Play Time:</strong>
 How long does your game take to play?
 <ul>
-    <li> Players have two minutes to collect all of the eggs. Due to the randomness of the controls, they are expected to take most of the time to complete the goal.</li>
+    <li>On average, 5 minutes.</li>
 </ul>
 </li>
 
