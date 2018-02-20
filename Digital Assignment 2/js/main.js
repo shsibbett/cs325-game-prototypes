@@ -17,7 +17,7 @@ window.onload = function() {
         game.load.tilemap('DA2', 'assets/DA2v2.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('tiles', 'assets/tileset12345.png');
         game.load.image('sky', 'assets/sky4.png');
-        game.load.spritesheet('chicken', 'assets/jODGJn4.png', 48, 48);
+        game.load.spritesheet('chicken', 'assets/chicken.png', 48, 48);
         game.load.image('egg', 'assets/egg.png');
         game.load.audio('lost_woods', 'assets/lostwoods.mp3');
         game.load.audio('cluck', 'assets/cluck.mp3');
