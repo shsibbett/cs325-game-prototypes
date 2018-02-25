@@ -255,6 +255,6 @@ window.onload = function() {
     }
     
     function render () {
-        game.debug.bodyInfo(player, 32, 32);
+        //game.debug.bodyInfo(player, 32, 32);
     }
 };
