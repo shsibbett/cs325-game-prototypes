@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Digital Assignment 4</title>
+    <script src="js/phaser.js"></script>
+    <script src="js/main.js"></script>
+
+<style>
+body
+{
+    color: #777;
+    font-family: "Avenir", Verdana, sans-serif;
+}
+#readme
+{
+    margin-top: 10px;
+}
+</style>
+
+</head>
+<body>
+<div id="game"></div>
+<div id="readme">
+<h2>Digital Assignment 4</h2>
+
+<ul>
+<li><strong>Originality:</strong>
+What is original about your game?
+<ul>
+    <li>Players have to deal with only being able to move in one direction while trying to get across a frozen lake.</li>
+</ul>
+</li>
+
+<li><strong>Technical Merit:</strong>
+What is interesting about your game technology?
+<ul>
+    <li>The game checks whether the player is overlapping with the 'ice' layer of the tilemap and if they are not colliding with 
+        rocks.</li>
+    <li>If both of these conditions are true, then the player slides.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Postmortem:</strong>
+What did you learn from this prototype?
+What was the easiest or hardest part of making it?
+<ul>
+    <li>I learned how to check if a sprite is overlapping with a particular layer in a tilemap.</li>
+    <li>The easiest part was creating the tilemap and puzzle.</li>
+    <li>The hardest part was figuring out the sliding mechanic; it was difficult to program when the player should slide and when 
+        they should be allowed to move again.</li>
+    <li></li>
+</ul>
+</li>
+
+<li><strong>Prototype Assets:</strong>
+Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
+<ul>
+    <li><a href="http://capx.wikia.com/wiki/Trainer_Classes">Hiker</a> sprite</li>
+    <li><a href="http://pixelartmaker.com/art/b6fdc68bf6bdd78">Flag</a> sprite</li>
+    <li><a href="http://www.mapeditor.org/">Tiled</a> was used to create the tilemap.</li>
+    <li><a href="http://capx.wikia.com/wiki/File:Ice_tiles.png">Tileset</a> I used for the ice floor and some of the rocks.</li>
+    <li><a href="https://phyromatical.deviantart.com/art/Tons-of-Tileset-5-10-Cool-Gaia-Tiles-486527845">Tileset</a> I used for the smaller rocks.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Closest Other Game:</strong>
+Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
+<ul>
+    <li>I was partially inspired by the ice puzzles that are found in some of the Pokemon games.</li>
+    <li>Player movement code was taken from the Phaser <a href="http://phaser.io/examples/v2/games/starstruck#gv">Starstruck</a> example.</li>
+    <li>Code I used to <a href="http://www.html5gamedevs.com/topic/25045-sprite-overlaping-with-tilemap-overlap-not-working/">check if a sprite overlapped with a tilemap layer</a></li>
+</ul>
+</li>
+
+<li><strong>High Concept:</strong>
+A one-sentence summary of your game.
+<ul>
+    <li>You are a hiker who must make his way across a frozen lake.</li>
+</ul>
+</li>
+
+<li><strong>Theme:</strong>
+State which of the Storymatic themes you used.
+<ul>
+    <li>I used the ice theme.</li>
+</ul>
+</li>
+
+<li><strong>Mandated Variety:</strong>
+State which input, randomness, genre, and play style you used in this prototype.
+<ul>
+    <li>Player uses the arrows to move.</li>
+    <li>Player eithers slides or walks normally depending on where they stand.</li>
+    <li>This game is taken from the 2D puzzle genre.</li>
+    <li>The play style encourages players to think critially about how to get to the goal.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Goal:</strong>
+What game mechanic is this prototype evaluating?
+<ul>
+    <li>The sliding on ice mechanic.</li>
+</ul>
+</li>
+
+<li><strong>Player Experience Goals:</strong>
+What experience do you want players to have when playing your game?
+<ul>
+    <li>Players should feel challenged to solve the puzzle of how to get across the ice.</li>
+</ul>
+</li>
+
+<li><strong>Gameplay:</strong>
+A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise 
+explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the 
+prototype. You may include mock-up images for parts of the game not in the prototype.
+<ul>
+    <li>You must make your way to the upper left corner of the screen where the flag is.</li>
+    <li>Use the arrows keys to move.</li>
+    <li>You can only walk freely on the snow.</li>
+    <li>On ice, you will slide forward until you collide with either a rock or a wall.</li>
+</ul>
+</li>
+
+<li><strong>Strategies:</strong>
+What player strategies do you expect will be effective at playing this game?
+<ul> 
+    <li>Think backwards to get to the goal.</li>
+    <li>Look at rocks or spaces on the walls that can get you to the goal, and then see how you can get to those places.</li>
+</ul>
+</li>
+
+<li><strong>Story/Setting/Premise:</strong>
+A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and 
+interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
+How will the dramatic tension interact with the gameplay tension?
+<ul>
+    <li>Your name is James Flynn, and you are an amateur mountain hiker looking to gain worldwide reknown with your exploits.
+        You are currently attemping the climb up Mt. Erinal and are faced with a challenge: a frozen lake stands between you and victory.
+    </li>
+</ul>
+</li>
+
+<li><strong>Target Audience:</strong>
+A single sentence that describes the demographic you're trying to reach.
+<ul>
+    <li>Anyone who enjoys puzzle games.</li>
+</ul>
+</li>
+
+<li><strong>Play Time:</strong>
+How long does your game take to play?
+<ul>
+    <li>Approximately 2 minutes.</li>
+</ul>
+</li>
+
+</ul>
+
+</div>
+</body>
+</html>
