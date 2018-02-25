@@ -20,7 +20,7 @@ window.onload = function() {
         game.load.spritesheet('player', 'assets/Hikers_overworlds.png', 31.6, 32);
         game.load.image('flag', 'assets/b6fdc68bf6bdd78.png');
         // game.load.audio('lost_woods', 'assets/lostwoods.mp3');
-        //game.load.audio('splat', 'assets/splat.mp3');
+        game.load.audio('music', 'assets/Pokemon- Heart Gold and Soul Silver- Ice PathCave- Music.mp3');
         //game.load.audio('exit', 'assets/exit.mp3');
     
     }
@@ -35,8 +35,8 @@ window.onload = function() {
     var player;
     var flag;
 
-    //var lost_woods;
-    //var splat;
+    var music;
+    //var slide;
     //var win;
     //var exit;
 
@@ -69,36 +69,29 @@ window.onload = function() {
         
         //lost_woods = game.add.audio('lost_woods');
         //lost_woods.loop = true;
-        //splat = game.add.audio('splat');
+        music = game.add.audio('music');
+        music.loop = true;
         //exit = game.add.audio('exit');
         //game_over = game.add.audio('game over');
     
         cursors = game.input.keyboard.createCursorKeys();
         
-        //lost_woods.play();
+        music.play();
     }
     
     function update() {
         //colliding = false;
         game.physics.arcade.collide(player, rocks, collision, null, this);
-        !game.physics.arcade.collide(player, rocks, slide, null, this);
-        //game.physics.arcade.collide(player, door, escape, null, this);
+        //!game.physics.arcade.collide(player, rocks, slide, null, this);
 
         game.input.enabled = true;
     
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
 
-        // if (success === false && player.world.x < 984 && player.world.x > 884 && player.world.y < 750 && player.world.y > 650) {
-        //     exit.play();
-            
-        //     exit.onStop.add(closeDoor, this);
-        //     success = true;
-        // }
-
         if (map.getTileWorldXY(player.x, player.y, map.tileWidth, map.tileHeight, ice) && !map.getTileWorldXY(player.x, player.y, map.tileWidth, map.tileHeight, snow)
             && colliding === false) {
-        
+
                 if (facing === 'left' && !player.body.blocked.left) {
                     player.body.velocity.x = -200;
                 }
@@ -125,7 +118,6 @@ window.onload = function() {
                 }
 
         } else {
-
             if (cursors.left.isDown)
             {
                 player.body.velocity.x = -200;
@@ -181,6 +173,8 @@ window.onload = function() {
         }
 
         if (player.x > 636 && player.y < 70) {
+            music.stop();
+
             var text = game.add.text(game.width / 2, game.height / 2, 'Success!');
             text.align = 'center';
             text.fixedToCamera = true;
@@ -261,6 +255,6 @@ window.onload = function() {
     }
     
     function render () {
-        //game.debug.bodyInfo(player, 32, 32);
+        game.debug.bodyInfo(player, 32, 32);
     }
 };
