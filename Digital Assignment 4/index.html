@@ -28,7 +28,8 @@ body
 <li><strong>Originality:</strong>
 What is original about your game?
 <ul>
-    <li>Players have to deal with only being able to move in one direction while trying to get across a frozen lake.</li>
+    <li>Players have to deal with only being able to move in one direction while trying to get a flag and then get across a frozen lake.</li>
+    <li>As the player progresses, the ice will crack and will have to avoid holes of water in the lake.</li>
 </ul>
 </li>
 
@@ -49,7 +50,7 @@ What was the easiest or hardest part of making it?
     <li>The easiest part was creating the tilemap and puzzle.</li>
     <li>The hardest part was figuring out the sliding mechanic; it was difficult to program when the player should slide and when 
         they should be allowed to move again.</li>
-    <li></li>
+    <li>It was also hard designing the puzzle and making sure the player couldn't easily grab the flag or get to the other side of the lake.</li>
 </ul>
 </li>
 
@@ -59,9 +60,11 @@ Did you make your prototype assets from scratch? Did you borrow them? Cite your 
     <li><a href="http://capx.wikia.com/wiki/Trainer_Classes">Hiker</a> sprite</li>
     <li><a href="http://pixelartmaker.com/art/b6fdc68bf6bdd78">Flag</a> sprite</li>
     <li><a href="https://www.youtube.com/watch?v=wtMcefR6VT4">Ice Path/Cave</a> music from Pokemon HeartGold/SoulSilver</li>
+    <li><a href="https://www.youtube.com/watch?v=KaU_TWPDbPM">Ice cracking</a> sound effect</li>
     <li><a href="http://www.mapeditor.org/">Tiled</a> was used to create the tilemap.</li>
     <li><a href="http://capx.wikia.com/wiki/File:Ice_tiles.png">Tileset</a> I used for the ice floor and some of the rocks.</li>
     <li><a href="https://phyromatical.deviantart.com/art/Tons-of-Tileset-5-10-Cool-Gaia-Tiles-486527845">Tileset</a> I used for the smaller rocks.</li>
+    <li><a href="http://charligalcreations.blogspot.com/">Water tileset</a></li>
 </ul>
 </li>
 
@@ -77,7 +80,7 @@ Which other game most closely resembles your game? If you are borrowing code fro
 <li><strong>High Concept:</strong>
 A one-sentence summary of your game.
 <ul>
-    <li>You are a hiker who must make his way across a frozen lake.</li>
+    <li>You are a hiker who must take up the flag of the previous expedition and make his way across a frozen lake.</li>
 </ul>
 </li>
 
@@ -108,7 +111,7 @@ What game mechanic is this prototype evaluating?
 <li><strong>Player Experience Goals:</strong>
 What experience do you want players to have when playing your game?
 <ul>
-    <li>Players should feel challenged to solve the puzzle of how to get across the ice.</li>
+    <li>Players should feel challenged to solve the puzzle of how to get the flag and get across the ice.</li>
 </ul>
 </li>
 
@@ -117,10 +120,11 @@ A paragraph describing the actions the player can perform, the system dynamics, 
 explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the 
 prototype. You may include mock-up images for parts of the game not in the prototype.
 <ul>
-    <li>You must make your way to the upper left corner of the screen where the flag is.</li>
+    <li>You must first collect the red flag, then make your way to the top right corner of the screen.</li>
     <li>Use the arrows keys to move.</li>
     <li>You can only walk freely on the snow.</li>
     <li>On ice, you will slide forward until you collide with either a rock or a wall.</li>
+    <li>If you slide into water, you die. Avoid it at all costs.</li>
 </ul>
 </li>
 
@@ -129,6 +133,7 @@ What player strategies do you expect will be effective at playing this game?
 <ul> 
     <li>Think backwards to get to the goal.</li>
     <li>Look at rocks or spaces on the walls that can get you to the goal, and then see how you can get to those places.</li>
+    <li>Avoid the water.</li>
 </ul>
 </li>
 
@@ -138,7 +143,9 @@ interesting? Do the tokens represent something? If the game has a backstory, men
 How will the dramatic tension interact with the gameplay tension?
 <ul>
     <li>Your name is James Flynn, and you are an amateur mountain hiker looking to gain worldwide reknown with your exploits.
-        You are currently attemping the climb up Mt. Erinal and are faced with a challenge: a frozen lake stands between you and victory.
+        You are currently attemping to travel the climb up Mt. Erinal and get farther than the last known expedition team. They
+        conveniently left a marker at their last camp in the form of a red flag. You find that the flag has been blown across 
+        the frozen lake near the campsite. You make it your goal to reach the flag and take it back to the base camp.
     </li>
 </ul>
 </li>
@@ -153,7 +160,7 @@ A single sentence that describes the demographic you're trying to reach.
 <li><strong>Play Time:</strong>
 How long does your game take to play?
 <ul>
-    <li>Approximately 2 minutes.</li>
+    <li>Approximately 3 minutes.</li>
 </ul>
 </li>
 

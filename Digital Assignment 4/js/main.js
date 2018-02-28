@@ -17,11 +17,12 @@ window.onload = function() {
         game.load.tilemap('DA4', 'assets/DA4.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('tileset1', 'assets/tons_of_tileset_8_10___ice_floe_tileset_by_phyromatical-d81x337.png');
         game.load.image('tileset2', 'assets/Ice_tiles.png');
+        game.load.image('tileset3', 'assets/!TS_WATER tp tile sheet.png');
         game.load.spritesheet('player', 'assets/Hikers_overworlds.png', 31.6, 32);
         game.load.image('flag', 'assets/b6fdc68bf6bdd78.png');
-        // game.load.audio('lost_woods', 'assets/lostwoods.mp3');
+        game.load.image('tent', 'assets/TentFF1.png');
         game.load.audio('music', 'assets/Pokemon- Heart Gold and Soul Silver- Ice PathCave- Music.mp3');
-        //game.load.audio('exit', 'assets/exit.mp3');
+        game.load.audio('crack', 'assets/crack.mp3');
     
     }
     
@@ -30,18 +31,20 @@ window.onload = function() {
     var rocks;
     var snow;
     var background;
+    var background2;
     var ice;
-    
+    var water;
+
     var player;
     var flag;
+    var tent;
 
     var music;
-    //var slide;
-    //var win;
-    //var exit;
+    var crack;
 
     var success = false;
     var colliding = false;
+    var hasFlag = false;
 
     var facing = 'up';
     
@@ -55,24 +58,24 @@ window.onload = function() {
     
         game.physics.startSystem(Phaser.Physics.ARCADE);
     
-        //game.stage.backgroundColor = '#0A0A0A';
-    
         createMap();
         createPlayer();  
 
-        flag = game.add.sprite(656, 21, 'flag');
+        flag = game.add.sprite(595, 490, 'flag');
         flag.scale.setTo(0.15, 0.15);
+        game.physics.arcade.enable(flag);
+
+        tent = game.add.sprite(735, 20, 'tent');
+        tent.scale.setTo(0.4, 0.4);
+        game.physics.arcade.enable(tent);
+        tent.body.immovable = true;
 
         game.physics.arcade.enable(rocks);
-        //game.physics.arcade.enable(snow);
         game.physics.arcade.enable(ice);
         
-        //lost_woods = game.add.audio('lost_woods');
-        //lost_woods.loop = true;
         music = game.add.audio('music');
         music.loop = true;
-        //exit = game.add.audio('exit');
-        //game_over = game.add.audio('game over');
+        crack = game.add.audio('crack');
     
         cursors = game.input.keyboard.createCursorKeys();
         
@@ -82,7 +85,8 @@ window.onload = function() {
     function update() {
         //colliding = false;
         game.physics.arcade.collide(player, rocks, collision, null, this);
-        //!game.physics.arcade.collide(player, rocks, slide, null, this);
+        game.physics.arcade.collide(player, tent);
+        game.physics.arcade.overlap(player, flag, collectFlag, null, this);
 
         game.input.enabled = true;
     
@@ -172,10 +176,32 @@ window.onload = function() {
                 colliding = false;
         }
 
-        if (player.x > 636 && player.y < 70) {
+        if (player.x > 636 && player.y < 70 && hasFlag) {
             music.stop();
 
+            flag = game.add.sprite(656, 21, 'flag');
+            flag.scale.setTo(0.15, 0.15);
+            game.physics.arcade.enable(flag);
+
             var text = game.add.text(game.width / 2, game.height / 2, 'Success!');
+            text.align = 'center';
+            text.fixedToCamera = true;
+            text.anchor.setTo(0.5, 0.5);
+
+            text.font = 'Arial Black';
+            text.fontSize = 68;
+            text.fontWeight = 'bold';
+
+            text.stroke = '#000000';
+            text.strokeThickness = 6;
+            text.fill = '#FFFFFF';
+        }
+
+        if (map.getTileWorldXY(player.x, player.y, map.tileWidth, map.tileHeight, water) && hasFlag) {
+            music.stop();
+            player.kill();
+
+            var text = game.add.text(game.width / 2, game.height / 2, 'You drowned!');
             text.align = 'center';
             text.fixedToCamera = true;
             text.anchor.setTo(0.5, 0.5);
@@ -195,11 +221,13 @@ window.onload = function() {
     
         map.addTilesetImage('ice', 'tileset1');
         map.addTilesetImage('ice2', 'tileset2');
+        map.addTilesetImage('water', 'tileset3');
 
-        ice = map.createLayer('Ice');
         background = map.createLayer('Background');
+        ice = map.createLayer('Ice');
         rocks = map.createLayer('Rocks');
         snow = map.createLayer('Snow');
+        background = map.createLayer('Background 2');
            
         map.setCollisionBetween(1, 3000, true, 'Rocks');
 
@@ -235,23 +263,12 @@ window.onload = function() {
         colliding = false;
     }
 
-    function escape(player, exit) {
-        player.kill();
+    function collectFlag (player, flag) {
+        flag.kill();
+        hasFlag = true;
 
-        //lost_woods.pause();
-
-        var text = game.add.text(game.width / 2, game.height / 2, 'You escaped!');
-        text.align = 'center';
-        text.fixedToCamera = true;
-        text.anchor.setTo(0.5, 0.5);
-
-        text.font = 'Arial Black';
-        text.fontSize = 68;
-        text.fontWeight = 'bold';
-
-        text.stroke = '#000000';
-        text.strokeThickness = 6;
-        text.fill = '#FFFFFF';
+        crack.play();
+        water = map.createLayer('Water');
     }
     
     function render () {
