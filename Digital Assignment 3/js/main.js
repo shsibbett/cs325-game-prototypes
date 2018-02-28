@@ -20,7 +20,6 @@ window.onload = function() {
         game.load.image('x', 'assets/red x.png', 16, 16);
         game.load.image('door', 'assets/doorv2.png');
         game.load.image('chunk', 'assets/chunk.png');
-        // game.load.audio('lost_woods', 'assets/lostwoods.mp3');
         game.load.audio('splat', 'assets/splat.mp3');
         game.load.audio('exit', 'assets/exit.mp3');
     
@@ -36,9 +35,7 @@ window.onload = function() {
     var deaths = 0;
     var deathText;
 
-    //var lost_woods;
     var splat;
-    //var win;
     var exit;
 
     var checkpoint1 = false;
@@ -87,15 +84,11 @@ window.onload = function() {
         deathText = game.add.text(16, 16, 'Deaths: 0', { fontSize: '28px', fill: '#FFF' });
         deathText.fixedToCamera = true;
         
-        //lost_woods = game.add.audio('lost_woods');
-        //lost_woods.loop = true;
         splat = game.add.audio('splat');
         exit = game.add.audio('exit');
-        //game_over = game.add.audio('game over');
-    
+ 
         cursors = game.input.keyboard.createCursorKeys();
-        
-        //lost_woods.play();
+
     }
     
     function update() {
@@ -245,8 +238,6 @@ window.onload = function() {
 
     function escape(player, exit) {
         player.kill();
-
-        //lost_woods.pause();
 
         var text = game.add.text(game.width / 2, game.height / 2, 'You escaped!');
         text.align = 'center';

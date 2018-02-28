@@ -268,6 +268,10 @@ window.onload = function() {
         hasFlag = true;
 
         crack.play();
+        crack.onStop.add(createWater, this);
+    }
+
+    function createWater(crack) {
         water = map.createLayer('Water');
     }
     
