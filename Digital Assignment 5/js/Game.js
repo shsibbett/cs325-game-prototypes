@@ -9,7 +9,7 @@ GameStates.makeGame = function( game, shared ) {
     var hamburger;
     var tomato;
     var cheese;
-    var top_bun;
+    var topbun;
 
     var phase1 = false;
     var phase2 = false;
@@ -62,7 +62,19 @@ GameStates.makeGame = function( game, shared ) {
                 }
             }
 
-            hamburger = game.add.sprite(500, 250,'hamburger');
+
+        
+            bun = game.add.sprite(game.world.centerX, 500, 'bottom_bun');
+            bun.anchor.setTo(0.5, 0.5);
+            bun.scale.setTo(0.15, 0.15);
+        
+            game.physics.arcade.enable(bun);
+        
+            bun.body.collideWorldBounds = true;
+            bun.body.bounce.set(1);
+            bun.body.immovable = true;
+
+            hamburger = game.add.sprite(550, 250,'hamburger');
             hamburger.anchor.setTo(0.5, 0.5);
             hamburger.scale.setTo(0.15, 0.15);
 
@@ -89,24 +101,14 @@ GameStates.makeGame = function( game, shared ) {
 
             tomato.body.collideWorldBounds = true;
 
-            top_bun = game.add.sprite(400, 90, 'top_bun');
-            top_bun.anchor.setTo(0.5, 0.5);
-            top_bun.scale.setTo(0.15, 0.15);
+            topbun = game.add.sprite(475, 90, 'top_bun');
+            topbun.anchor.setTo(0.5, 0.5);
+            topbun.scale.setTo(0.15, 0.15);
 
-            game.physics.arcade.enable(top_bun);
-            top_bun.body.gravity.y = 200;
+            game.physics.arcade.enable(topbun);
+            topbun.body.gravity.y = 200;
 
-            top_bun.body.collideWorldBounds = true;
-        
-            bun = game.add.sprite(game.world.centerX, 500, 'bottom_bun');
-            bun.anchor.setTo(0.5, 0.5);
-            bun.scale.setTo(0.15, 0.15);
-        
-            game.physics.arcade.enable(bun);
-        
-            bun.body.collideWorldBounds = true;
-            bun.body.bounce.set(1);
-            bun.body.immovable = true;
+            topbun.body.collideWorldBounds = true;
         
             seed = game.add.sprite(game.world.centerX, bun.y - 16, 'seed');
             seed.anchor.set(0.5, 0.5);
@@ -146,9 +148,15 @@ GameStates.makeGame = function( game, shared ) {
             {
                 seed.body.x = bun.x - 5;
 
-                // if (phase1) {
-                //     seed.body.y = bun.y - 35;
-                // }
+                if (phase1 && !phase2 && !phase3) {
+                    seed.body.y = bun.y - 38;
+                } else if (!phase1 && phase2 && !phase3) {
+                    seed.body.y = bun.y - 20;
+                } else if (phase1 && phase2 && !phase3) {
+                    seed.body.y = bun.y - 40;
+                } else if (phase1 && phase2 && phase3) {
+                    seed.body.y = bun.y - 50;
+                }
             }
             else
             {
@@ -158,12 +166,12 @@ GameStates.makeGame = function( game, shared ) {
 
             game.physics.arcade.collide(hamburger, bricks);
             game.physics.arcade.collide(hamburger, bun, this.burgerHitBun, null, this);
-            game.physics.arcade.collide(cheese, bricks);
-            game.physics.arcade.collide(cheese, bun, this.cheeseHitBun, null, this);
             game.physics.arcade.collide(tomato, bricks);
             game.physics.arcade.collide(tomato, bun, this.tomatoHitBun, null, this);
-            game.physics.arcade.collide(top_bun, bricks);
-            game.physics.arcade.collide(top_bun, bun, this.top_bunHitBun, null, this);
+            game.physics.arcade.collide(cheese, bricks);
+            game.physics.arcade.collide(cheese, bun, this.cheeseHitBun, null, this);
+            game.physics.arcade.collide(topbun, bricks);
+            game.physics.arcade.collide(topbun, bun, this.top_bunHitBun, null, this);
         },
         
         releaseSeed: function () {
@@ -192,7 +200,7 @@ GameStates.makeGame = function( game, shared ) {
             {
                 seedOnBun = true;
         
-                seed.reset(bun.body.x + 16, bun.y - 16);
+                seed.reset(bun.body.x + 15, bun.y - 16);
                 
                 //seed.animations.stop();
             }
@@ -222,7 +230,7 @@ GameStates.makeGame = function( game, shared ) {
                 //  New level starts
                 score += 1000;
                 scoreText.text = 'score: ' + score;
-                introText.text = '- Next Level -';
+                //introText.text = '- Next Level -';
         
                 seedOnBun = true;
                 seed.body.velocity.set(0);
@@ -231,7 +239,7 @@ GameStates.makeGame = function( game, shared ) {
                 //seed.animations.stop();
         
                 //  And bring the bricks back from the dead :)
-                bricks.callAll('revive');
+                //bricks.callAll('revive');
             }
         
         },
@@ -259,93 +267,124 @@ GameStates.makeGame = function( game, shared ) {
         },
 
         burgerHitBun: function (_hamburger, _bun) {
-            score += 100;
-            scoreText.text = 'score: ' + score;
+            if (!phase1) {
+                score += 100;
+                scoreText.text = 'score: ' + score;
+            }
 
             var x = bun.x;
             var y = bun.y;
 
-            bun.kill();
             hamburger.kill();
 
-            bun = game.add.sprite(x, y, 'phase1');
-            bun.anchor.setTo(0.5, 0.5);
-            bun.scale.setTo(0.15, 0.15);
+            hamburger = game.add.sprite(x, y, 'hamburger');
+            hamburger.anchor.setTo(0.5, 0.5);
+            hamburger.scale.setTo(0.15, 0.15);
+            game.physics.arcade.enable(hamburger);
+
+            hamburger.x = bun.x;
+
+            hamburger.y = bun.y - 5;
+
+            hamburger.body.gravity.y = 0;
         
-            game.physics.arcade.enable(bun);
-        
-            bun.body.collideWorldBounds = true;
-            bun.body.bounce.set(1);
-            bun.body.immovable = true;
+            //!game.physics.arcade.enable(hamburger);
 
             phase1 = true;
         },
 
         cheeseHitBun: function (_cheese, _bun) {
-            score += 100;
-            scoreText.text = 'score: ' + score;
+           if (!phase2) {
+                score += 100;
+                scoreText.text = 'score: ' + score;
+            }
 
             var x = bun.x;
             var y = bun.y;
 
-            bun.kill();
             cheese.kill();
 
-            bun = game.add.sprite(x, y, 'phase2');
-            bun.anchor.setTo(0.5, 0.5);
-            bun.scale.setTo(0.15, 0.15);
+            cheese = game.add.sprite(x, y, 'cheese');
+            cheese.anchor.setTo(0.5, 0.5);
+            cheese.scale.setTo(0.15, 0.15);
+            game.physics.arcade.enable(cheese);
+
+
+            cheese.x = bun.x - 1;
+
+            if (!phase1 && !phase3){
+                cheese.y = bun.y - 4;
+            } else if ((phase1 && !phase3) || (!phase1 && phase3)) {
+                cheese.y = bun.y - 8;
+            } else if (phase1 && phase3) {
+                cheese.y = bun.y - 10;
+            } else if (phase2 && phase3) {
+                cheese.y = bun.y - 15;
+            }
+
+            cheese.body.gravity.y = 0;
         
-            game.physics.arcade.enable(bun);
-        
-            bun.body.collideWorldBounds = true;
-            bun.body.bounce.set(1);
-            bun.body.immovable = true;
+            //!game.physics.arcade.enable(cheese);
 
             phase2 = true;
         },
 
         tomatoHitBun: function (_tomato, _bun) {
-            score += 100;
-            scoreText.text = 'score: ' + score;
+            if (!phase3) {
+                score += 100;
+                scoreText.text = 'score: ' + score;
+            }
 
             var x = bun.x;
             var y = bun.y;
 
-            bun.kill();
             tomato.kill();
 
-            bun = game.add.sprite(x, y, 'phase3');
-            bun.anchor.setTo(0.5, 0.5);
-            bun.scale.setTo(0.15, 0.15);
-        
-            game.physics.arcade.enable(bun);
-        
-            bun.body.collideWorldBounds = true;
-            bun.body.bounce.set(1);
-            bun.body.immovable = true;
+            tomato = game.add.sprite(x, y, 'tomato');
+            tomato.anchor.setTo(0.5, 0.5);
+            tomato.scale.setTo(0.15, 0.15);
+            game.physics.arcade.enable(tomato);
+
+
+            tomato.x = bun.x;
+
+            if (!phase1 && !phase2){
+                tomato.y = bun.y - 5;
+            } else {
+                tomato.y = bun.y - 10;
+            } 
+
+            tomato.body.gravity.y = 0;
 
             phase3 = true;
         },
 
-        top_bunHitBun: function (_top_bun, _bun) {
-            score += 100;
-            scoreText.text = 'score: ' + score;
+        top_bunHitBun: function (_topbun, _bun) {
+            if (!phase4) {
+                score += 100;
+                scoreText.text = 'score: ' + score;
+            }
 
             var x = bun.x;
             var y = bun.y;
 
-            bun.kill();
-            top_bun.kill();
+            topbun.kill();
 
-            bun = game.add.sprite(x, y, 'phase4');
-            bun.anchor.setTo(0.5, 0.5);
-            bun.scale.setTo(0.15, 0.15);
-        
-            game.physics.arcade.enable(bun);
-        
-            bun.body.collideWorldBounds = true;
-            bun.body.bounce.set(1);
-            bun.body.immovable = true;
+            topbun= game.add.sprite(x, y, 'top_bun');
+            topbun.anchor.setTo(0.5, 0.5);
+            topbun.scale.setTo(0.15, 0.15);
+            game.physics.arcade.enable(topbun);
+
+
+            topbun.x = bun.x;
+
+            if (!phase1 && !phase2){
+                topbun.y = bun.y - 5;
+            } else {
+                topbun.y = bun.y - 15;
+            } 
+
+            topbun.body.gravity.y = 0;
 
             phase4 = true;
         }
