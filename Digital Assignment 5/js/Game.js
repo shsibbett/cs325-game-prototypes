@@ -1,7 +1,7 @@
 "use strict";
 
 GameStates.makeGame = function( game, shared ) {
-    // Create your own variables.
+
     var bun;
     var seed;
     var bricks;
@@ -16,6 +16,11 @@ GameStates.makeGame = function( game, shared ) {
     var phase3 = false;
     var phase4 = false;
 
+    var hLost = false;
+    var tLost = false;
+    var cLost = false;
+    var tbLost = false;
+
     var seedOnBun = true;
     
     var lives = 3;
@@ -25,13 +30,16 @@ GameStates.makeGame = function( game, shared ) {
     var livesText;
     var introText;
 
+    var hit;
+    var caught;
+    var bounce;
+    var drop;
+    var win;
+    var game_over;
+    var wall;
+
     
     function quitGame() {
-
-        //  Here you should destroy anything you no longer need.
-        //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
-
-        //  Then let's go back to the main menu.
         game.state.start('MainMenu');
 
     }
@@ -41,10 +49,8 @@ GameStates.makeGame = function( game, shared ) {
         create: function () {
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
-            //  We check bounds collisions against all walls other than the bottom one
+
             game.physics.arcade.checkCollision.down = false;
-        
-            //s = game.add.tileSprite(0, 0, 800, 600, 'starfield');
         
             bricks = game.add.group();
             bricks.enableBody = true;
@@ -74,41 +80,41 @@ GameStates.makeGame = function( game, shared ) {
             bun.body.bounce.set(1);
             bun.body.immovable = true;
 
-            hamburger = game.add.sprite(550, 250,'hamburger');
+           //hamburger = game.add.sprite(550, 250,'hamburger');
+            hamburger = game.add.sprite(game.rnd.integerInRange(120, 624), 250,'hamburger');
             hamburger.anchor.setTo(0.5, 0.5);
             hamburger.scale.setTo(0.15, 0.15);
 
             game.physics.arcade.enable(hamburger);
             hamburger.body.gravity.y = 200;
+            hamburger.checkWorldBounds = true;
 
-            hamburger.body.collideWorldBounds = true;
-
-            cheese = game.add.sprite(150, 200, 'cheese');
+            //cheese = game.add.sprite(300, 145, 'cheese');
+            cheese = game.add.sprite(game.rnd.integerInRange(120, 624), 145, 'cheese');
             cheese.anchor.setTo(0.5, 0.5);
             cheese.scale.setTo(0.15, 0.15);
 
             game.physics.arcade.enable(cheese);
             cheese.body.gravity.y = 200;
+            cheese.checkWorldBounds = true;
 
-            cheese.body.collideWorldBounds = true;
-
-            tomato = game.add.sprite(300, 145, 'tomato');
+            //tomato = game.add.sprite(150, 200, 'tomato');
+            tomato = game.add.sprite(game.rnd.integerInRange(120, 624), 200, 'tomato');
             tomato.anchor.setTo(0.5, 0.5);
             tomato.scale.setTo(0.15, 0.15);
 
             game.physics.arcade.enable(tomato);
             tomato.body.gravity.y = 200;
+            tomato.checkWorldBounds = true;
 
-            tomato.body.collideWorldBounds = true;
-
-            topbun = game.add.sprite(475, 90, 'top_bun');
+            //topbun = game.add.sprite(475, 90, 'top_bun');
+            topbun = game.add.sprite(game.rnd.integerInRange(120, 624), 90, 'top_bun');
             topbun.anchor.setTo(0.5, 0.5);
             topbun.scale.setTo(0.15, 0.15);
 
             game.physics.arcade.enable(topbun);
             topbun.body.gravity.y = 200;
-
-            topbun.body.collideWorldBounds = true;
+            topbun.checkWorldBounds = true;
         
             seed = game.add.sprite(game.world.centerX, bun.y - 16, 'seed');
             seed.anchor.set(0.5, 0.5);
@@ -123,6 +129,18 @@ GameStates.makeGame = function( game, shared ) {
             //seed.animations.add('spin', [ 'ball_1.png', 'ball_2.png', 'ball_3.png', 'ball_4.png', 'ball_5.png' ], 50, true, false);
         
             seed.events.onOutOfBounds.add(this.seedLost, this);
+            hamburger.events.onOutOfBounds.add(this.hamburgerLost, this);
+            tomato.events.onOutOfBounds.add(this.tomatoLost, this);
+            cheese.events.onOutOfBounds.add(this.cheeseLost, this);
+            topbun.events.onOutOfBounds.add(this.topbunLost, this);
+
+            hit = game.add.audio('hit');
+            caught = game.add.audio('catch');
+            bounce = game.add.audio('bounce');
+            drop = game.add.audio('drop');
+            win = game.add.audio('win');
+            game_over = game.add.audio('game_over');
+            wall = game.add.audio('wall');
         
             scoreText = game.add.text(32, 550, 'score: 0', { font: "20px Arial", fill: "#ffffff", align: "left" });
             livesText = game.add.text(680, 550, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
@@ -143,6 +161,10 @@ GameStates.makeGame = function( game, shared ) {
             {
                 bun.x = game.width - 24;
             }
+
+            if (hLost && cLost && tLost && tbLost) {
+                this.gameOver();
+            }
         
             if (seedOnBun)
             {
@@ -151,10 +173,12 @@ GameStates.makeGame = function( game, shared ) {
                 if (phase1 && !phase2 && !phase3) {
                     seed.body.y = bun.y - 38;
                 } else if (!phase1 && phase2 && !phase3) {
-                    seed.body.y = bun.y - 20;
+                    seed.body.y = bun.y - 33;
                 } else if (phase1 && phase2 && !phase3) {
                     seed.body.y = bun.y - 40;
-                } else if (phase1 && phase2 && phase3) {
+                } else if (phase1 && phase3) {
+                    seed.body.y = bun.y - 45;
+                } else if (phase4) {
                     seed.body.y = bun.y - 50;
                 }
             }
@@ -172,6 +196,72 @@ GameStates.makeGame = function( game, shared ) {
             game.physics.arcade.collide(cheese, bun, this.cheeseHitBun, null, this);
             game.physics.arcade.collide(topbun, bricks);
             game.physics.arcade.collide(topbun, bun, this.top_bunHitBun, null, this);
+
+            if (seed.body.blocked.up || seed.body.blocked.left || seed.body.blocked.right) {
+                wall.play();
+            }
+
+            if ((phase1 && phase2 && phase3 && phase4) || (hLost && phase2 && phase3 && phase4) || (phase1 && cLost && phase3 && phase4) ||
+            (phase1 && phase2 && tLost && phase4) || (phase1 && phase2 && phase3 && tbLost) || (hLost && cLost && phase3 && phase4) ||
+            (hLost && cLost && tLost && phase4) || (hLost && phase2 && tLost && phase4) || (hLost && phase2 && tLost && tbLost) || 
+            (hLost && phase2 && phase3 && tbLost) || (hLost && cLost && phase3 && tbLost) || (phase1 && cLost && tLost && phase4) || 
+            (phase1 && cLost && tLost && tbLost) || (phase1 && cLost && phase3 && tbLost) || (phase1 && phase2 && tLost && tbLost))
+            {
+                win.play();
+
+                score += 1000;
+                scoreText.text = 'score: ' + score;
+                introText.text = '- Next Level -';
+        
+                seedOnBun = true;
+                seed.body.velocity.set(0);
+                seed.x = bun.x + 16;
+                seed.y = bun.y - 16;
+
+                phase1 = false;
+                phase2 = false;
+                phase3 = false;
+                phase4 = false;
+
+                hLost = false;
+                cLost = false;
+                tLost = false;
+                tbLost = false;
+
+                hamburger.reset(game.rnd.integerInRange(120, 624), 250);
+                hamburger.anchor.setTo(0.5, 0.5);
+                hamburger.scale.setTo(0.15, 0.15);
+
+                game.physics.arcade.enable(hamburger);
+                hamburger.body.gravity.y = 200;
+                hamburger.checkWorldBounds = true;
+
+                tomato.reset(game.rnd.integerInRange(120, 624), 200);
+                tomato.anchor.setTo(0.5, 0.5);
+                tomato.scale.setTo(0.15, 0.15);
+
+                game.physics.arcade.enable(tomato);
+                tomato.body.gravity.y = 200;
+                tomato.checkWorldBounds = true;
+
+                cheese.reset(game.rnd.integerInRange(120, 624), 145);
+                cheese.anchor.setTo(0.5, 0.5);
+                cheese.scale.setTo(0.15, 0.15);
+
+                game.physics.arcade.enable(cheese);
+                cheese.body.gravity.y = 200;
+                cheese.checkWorldBounds = true;
+
+                topbun.reset(game.rnd.integerInRange(120, 624), 90);
+                topbun.anchor.setTo(0.5, 0.5);
+                topbun.scale.setTo(0.15, 0.15);
+
+                game.physics.arcade.enable(topbun);
+                topbun.body.gravity.y = 200;
+                topbun.checkWorldBounds = true;
+
+                bricks.callAll('revive');
+            }
         },
         
         releaseSeed: function () {
@@ -181,14 +271,14 @@ GameStates.makeGame = function( game, shared ) {
                 seedOnBun = false;
                 seed.body.velocity.y = -300;
                 seed.body.velocity.x = -75;
-                seed.animations.play('spin');
+                //seed.animations.play('spin');
                 introText.visible = false;
             }
         
         },
         
         seedLost: function () {
-        
+            drop.play();
             lives--;
             livesText.text = 'lives: ' + lives;
         
@@ -206,9 +296,30 @@ GameStates.makeGame = function( game, shared ) {
             }
         
         },
+
+        hamburgerLost: function() {
+            drop.play();
+            hLost = true;
+        },
+
+        tomatoLost: function() {
+            drop.play();
+            tLost = true;
+        },
+
+        cheeseLost: function() {
+            drop.play();
+            cLost = true;
+        },
+
+        topbunLost: function() {
+            drop.play();
+            tbLost = true;
+        },
         
         gameOver: function () {
-        
+            game_over.play();
+
             seed.body.velocity.setTo(0, 0);
             
             introText.text = 'Game Over!';
@@ -217,34 +328,18 @@ GameStates.makeGame = function( game, shared ) {
         },
         
         seedHitBrick: function (_seed, _brick) {
-        
+            hit.play();
+
             _brick.kill();
         
             score += 10;
         
-            scoreText.text = 'score: ' + score;
-        
-            //  Are they any bricks left?
-            if (bricks.countLiving() == 0)
-            {
-                //  New level starts
-                score += 1000;
-                scoreText.text = 'score: ' + score;
-                //introText.text = '- Next Level -';
-        
-                seedOnBun = true;
-                seed.body.velocity.set(0);
-                seed.x = bun.x + 16;
-                seed.y = bun.y - 16;
-                //seed.animations.stop();
-        
-                //  And bring the bricks back from the dead :)
-                //bricks.callAll('revive');
-            }
-        
+            scoreText.text = 'score: ' + score;        
         },
         
         seedHitBun: function (_seed, _bun) {
+            
+            bounce.play();
         
             var diff = 0;
         
@@ -260,14 +355,13 @@ GameStates.makeGame = function( game, shared ) {
             }
             else
             {
-                //  Ball is perfectly in the middle
-                //  Add a little random X to stop it bouncing straight up!
                 _seed.body.velocity.x = 2 + Math.random() * 8;
             }
         },
 
         burgerHitBun: function (_hamburger, _bun) {
             if (!phase1) {
+                caught.play();
                 score += 100;
                 scoreText.text = 'score: ' + score;
             }
@@ -295,6 +389,7 @@ GameStates.makeGame = function( game, shared ) {
 
         cheeseHitBun: function (_cheese, _bun) {
            if (!phase2) {
+               caught.play();
                 score += 100;
                 scoreText.text = 'score: ' + score;
             }
@@ -331,6 +426,7 @@ GameStates.makeGame = function( game, shared ) {
 
         tomatoHitBun: function (_tomato, _bun) {
             if (!phase3) {
+                caught.play();
                 score += 100;
                 scoreText.text = 'score: ' + score;
             }
@@ -361,6 +457,7 @@ GameStates.makeGame = function( game, shared ) {
 
         top_bunHitBun: function (_topbun, _bun) {
             if (!phase4) {
+                caught.play();
                 score += 100;
                 scoreText.text = 'score: ' + score;
             }
@@ -379,7 +476,7 @@ GameStates.makeGame = function( game, shared ) {
             topbun.x = bun.x;
 
             if (!phase1 && !phase2){
-                topbun.y = bun.y - 5;
+                topbun.y = bun.y - 10;
             } else {
                 topbun.y = bun.y - 15;
             } 

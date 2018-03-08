@@ -34,25 +34,45 @@ body
 <ul>
 <li><strong>Originality:</strong>
 What is original about your game?
+<ul>
+	<li>The user makes a cheeseburger by breaking the platforms the components are on and catching them on their bun as they fall.</li>
+</ul>
 </li>
 
 <li><strong>Technical Merit:</strong>
 What is interesting about your game technology?
+<ul>
+	<li>This game uses game states.</li>
+	<li>The components can be caught in any order and are layered as you catch them. This is done by setting the components to the bun paddle's x coordinate and
+		just slightly above the y coordinate.</li>
+	<li>While each component will always generate on their respective platform, the x value is randomly generated for a different position everytime.</li>
+	<li>This game features levels and resets when all of the burger components have either been caught or have fallen out of bounds.</li>
+</ul>
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
 What did you learn from this prototype?
 What was the easiest or hardest part of making it?
+<ul>
+	<li>I learned how to use games states, which was a little difficult to work with at first.</li>
+	<li>I also learned how to set a sprite to move with the mouse pointer and how to set a sprite's value to be randomly generated.</li>
+	<li>The hardest part was getting each burger component to layer properly; I had to figure out what the y value of the component should be if there were
+		already other components of the bun paddle so that the sandwich looked like a sandwich.</li>
+	<li>The 'win a level' conditions were a little hard to nail down. As the player must win a level by catching at least one burger component, there were
+		fifteen different conditions under which a player could 'win' a level as there are four components [2^4 = 16 - 1 (the condition where all of the 
+		components fall is considered a 'game over' condition) = 15].
+	</li>
+</ul>
 </li>
 
 <li><strong>Prototype Assets:</strong>
 Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
 <ul>
-<li>Loading screen from the multiple game state template
-<li><a href:"http://moziru.com/explore/The%20Kitchen%20clipart%20kitchen%20background/">Kitchen </a> clipart</li>
-<li><a href:"http://pixelartmaker.com/art/6910567ea40879e">New Game button</a></li>
-<li><a href:"http://www.vertigogaming.net/blog/?p=757">Burger</a> sprites</li>
-<li><a href:"http://fanonlords.wikia.com/wiki/Category:Sprites?page=3">Seed</a> sprite</li>
+<li>Loading screen from the multiple game state template.
+<li><a href="http://pixelartmaker.com/art/6910567ea40879e">New Game button</a></li>
+<li><a href="http://www.vertigogaming.net/blog/?p=757">Burger</a> sprites</li>
+<li><a href="http://fanonlords.wikia.com/wiki/Category:Sprites?page=3">Seed</a> sprite</li>
+<li>All sound effects from Phaser <a href="https://github.com/photonstorm/phaser-examples/tree/master/examples/assets">audio assets</a></li>
 </ul>
 </li>
 
@@ -62,48 +82,105 @@ Which other game most closely resembles your game? If you are borrowing code fro
 <li>The code for this example is adapted from the Phaser <a href="https://phaser.io/examples/v2/games/breakout">Breakout</a> game</li>
 <li>Button action adapted from Phaser example <a href="https://phaser.io/examples/v2/buttons/action-on-click">Action On Click</a></li>
 <li>Mouse movement from Phaser example <a href="https://phaser.io/examples/v2/input/motion-lock-horizontal">Motion Lock Horizontal</a></li>
+<li><a href="https://phaser.io/examples/v2/misc/random-generators">Random Number Generator</a> used to randomly place burger pieces on platforms.</li>
 </ul>
 </li>
 
 <li><strong>High Concept:</strong>
 A one-sentence summary of your game.
+<ul>
+	<li>You are hungry and want to eat a burger, but you must first use a sesame seed projectile to break all the components out of their platforms and catch 
+		the pieces as they fall.</li>
+</ul>
 </li>
 
 <li><strong>Theme:</strong>
 State which of the Storymatic themes you used.
+<ul>
+	<li>I used the making a sandwich theme.</li>
+</ul>
 </li>
 
 <li><strong>Mandated Variety:</strong>
 State which input, randomness, genre, and play style you used in this prototype.
+<ul>
+	<li>Input: the player used the mouse to move the bun paddle back and forth horizontally.</li>
+	<li>Randomness: the burger components are randomly generated on their platforms. Also, the velocity of the projectile is randomized.</li>
+	<li>Genre: 2D arcade game.</li>
+	<li>Play Style: The player's goal is to get as many points as possible while making a burger.</li>
+</ul>
 </li>
 
 <li><strong>Prototype Goal:</strong>
 What game mechanic is this prototype evaluating?
+<ul>
+	<li>The 'Breakout' style mechanics.</li>
+	<li>Also, the burger building mechanic.</li>
+</ul>
 </li>
 
 <li><strong>Player Experience Goals:</strong>
 What experience do you want players to have when playing your game?
+<ul>
+	<li>Players should have a fun time playing.</li>
+	<li>They should also be compelled to continue playing as the gameplay is addictive and never stops until they run out of lives.</li>
+</ul>
 </li>
 
 <li><strong>Gameplay:</strong>
-A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
+A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs 
+and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not 
+in the prototype.
+<ul>
+	<li>The player moves the bun paddle with the mouse.</li>
+	<li>They must use the sesame seed projectile to break the other burger components out of their platforms and catch them as they fall with the bun paddle.</li>
+	<li>The player must also keep the sesame seed in play by hitting it with the bun paddle.</li>
+	<li>10 points is earned for each brick broken. 100 points are earned for each burger piece caught. 1000 points are earned for completing a level.</li>
+	<li>The player must catch at least one component per level, or it is game over.</li>
+	<li>Once all the burger components have been either caught or lost, everything resets and the next level starts.</li>
+	<li>The player has three lives. </li>
+	<li>If the sesame seed projectile fall to the bottom of the screen, the player loses a life.</li>
+	<li>If the player loses the sesame seed three times, it is game over.</li>
+</ul>
 </li>
 
 <li><strong>Strategies:</strong>
 What player strategies do you expect will be effective at playing this game?
+<ul>
+	<li>To get the highest score, players should try to break as many bricks before collecting or losing all of the burger components as the next level will
+		start as soon as they have done so.</li>
+	<li>Having said that, the player should not prioritize catching a burger piece over catching the sesame seed as lives are more valuable than points and will
+		keep the game going longer.</li>
+	<li>Be careful not to move the bun paddle at the same time as the sesame seed hits it, or the seed's velocity will increase. This could make hitting it more
+		difficult.
+	</li>
+</ul>
 </li>
 
 <li><strong>Story/Setting/Premise:</strong>
 A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
 How will the dramatic tension interact with the gameplay tension?
+<ul>
+	<li>You are hungry and have decided to make a burger. In your kitchen, you discover a portal to another dimension has mysteriously appeared in your fridge!
+		Normally, you wouldn't bother, but you are so hungry that you decide to follow the contents of your refridgerator into the void. There, you discover that
+		all the ingredients you need have fallen on multiple floating platforms. Using the bottom of a hamburger bun and an overly large sesame seed, you resolve
+		to get the ingredients and cease your tummy's rumblings.
+	</li>
+</ul>
 </li>
 
 <li><strong>Target Audience:</strong>
 A single sentence that describes the demographic you're trying to reach.
+<ul>
+	<li>Everyone! This game is easy to pick up and play and has an addictive play style that everyone can enjoy.</li>
+</ul>
 </li>
 
 <li><strong>Play Time:</strong>
 How long does your game take to play?
+<ul>
+	<li>The average time to play a level is 1-2 minutes. As the game has infinite levels, it could go on forever depending on the skill of the player.</li>
+</ul>
 </li>
 
 </ul>

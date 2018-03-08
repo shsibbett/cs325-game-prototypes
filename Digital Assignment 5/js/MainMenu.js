@@ -2,15 +2,12 @@
 
 GameStates.makeMainMenu = function( game, shared ) {
 
-	var music = null;
-	var playButton = null;
+    var playButton = null;
+    var play;
     
     function startGame(pointer) {
+        play.play();
 
-        //	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
-        music.stop();
-
-        //	And start the actual game
         game.state.start('Game');
 
     }
@@ -18,25 +15,25 @@ GameStates.makeMainMenu = function( game, shared ) {
     return {
     
         create: function () {
+  
+
+            game.stage.backgroundColor = '#000000';
+
+            var menuText = game.add.text(game.world.centerX, game.world.centerY - 200, 'Burger Breakout', { font: "40px Arial", fill: "#ffffff", align: "center" });
+            menuText.anchor.setTo(0.5, 0.5);
     
-            //	We've already preloaded our assets, so let's kick right into the Main Menu itself.
-            //	Here all we're doing is playing some music and adding a picture and button
-            //	Naturally I expect you to do something significantly better :)
+            var bg = game.add.sprite(game.world.centerX, game.world.centerY, 'phase4');
+            bg.anchor.setTo(0.5, 0.5);
+            bg.scale.setTo(0.65, 0.65);
     
-            music = game.add.audio('titleMusic');
-            //music.play();
-    
-            var bg = game.add.sprite(0, 0, 'titlePage');
-            bg.scale.setTo(0.65, 0.75);
-    
-            playButton = game.add.button(game.world.centerX - 200, game.world.centerY + 50, 'playButton', startGame, null);
+            playButton = game.add.button(game.world.centerX - 217, game.world.centerY + 100, 'playButton', startGame, null);
             playButton.scale.setTo(0.5, 0.5);
+
+            play = game.add.audio('win');
     
         },
     
         update: function () {
-    
-            //	Do some nice funky main menu effect here
     
         }
         
