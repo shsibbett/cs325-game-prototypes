@@ -115,7 +115,7 @@ window.onload = function() {
 	game.physics.arcade.collide(enemy, rocks, collision, null, this);
 	game.physics.arcade.collide(enemy, tent);
 
-        game.input.enabled = true;
+        //game.input.enabled = true;
     
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
@@ -162,7 +162,7 @@ window.onload = function() {
                     facing = 'down';
                 }
             }
-            else if (!cursors.left.isDown && !cursors.right.isDown && !cursors.up.isDown&& !cursors.down.isDown) 
+            else 
             {
                 if (facing != 'idle')
                 {
@@ -170,7 +170,7 @@ window.onload = function() {
                 }
             }
 
-            else if (a.isDown)
+            if (a.isDown)
             {
                 enemy.body.velocity.x = -200;
         
