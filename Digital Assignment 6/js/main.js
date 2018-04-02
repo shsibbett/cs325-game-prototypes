@@ -69,7 +69,7 @@ window.onload = function() {
         createMap();
         createPlayer();
 
-        enemy = game.add.sprite(30, 715, 'enemy');
+        enemy = game.add.sprite(730, 20, 'enemy');
         game.physics.arcade.enable(enemy);
         player.body.collideWorldBounds = true;
         player.body.setSize(24, 24, 5, 16);
