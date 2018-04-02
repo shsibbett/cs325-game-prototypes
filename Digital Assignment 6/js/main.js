@@ -71,14 +71,14 @@ window.onload = function() {
 
         enemy = game.add.sprite(720, 20, 'enemy');
         game.physics.arcade.enable(enemy);
-        player.body.collideWorldBounds = true;
-        player.body.setSize(24, 24, 5, 16);
+        enemy.body.collideWorldBounds = true;
+        //enemy.body.setSize(24, 24, 5, 16);
     
-        player.animations.add('left', [9, 10, 11], 5, true);
+        enemy.animations.add('left', [9, 10, 11], 5, true);
         //player.animations.add('turn', [4], 20, true);
-        player.animations.add('right', [3, 4, 5], 5, true);
-        player.animations.add('up', [6, 7, 8], 5, true);
-        player.animations.add('down', [0, 1, 2], 5, true);
+        enemy.animations.add('right', [3, 4, 5], 5, true);
+        enemy.animations.add('up', [6, 7, 8], 5, true);
+        enemy.animations.add('down', [0, 1, 2], 5, true);
 
         flag = game.add.sprite(595, 490, 'flag');
         flag.scale.setTo(0.15, 0.15);
