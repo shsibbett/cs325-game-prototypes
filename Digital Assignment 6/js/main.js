@@ -112,40 +112,16 @@ window.onload = function() {
         game.physics.arcade.collide(player, tent);
         game.physics.arcade.overlap(player, flag, collectFlag, null, this);
 
+	game.physic.arcade.collide(enemy, rocks, collision, null, this);
+	game.physics.arcade.collide(enemy, tent);
+
         game.input.enabled = true;
     
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
-
-        if (map.getTileWorldXY(player.x, player.y, map.tileWidth, map.tileHeight, ice) && !map.getTileWorldXY(player.x, player.y, map.tileWidth, map.tileHeight, snow)
-            && colliding === false) {
-
-                if (facing === 'left' && !player.body.blocked.left) {
-                    player.body.velocity.x = -200;
-                }
-
-                else if (facing === 'right' && !player.body.blocked.right) {
-                    player.body.velocity.x = 200;
-                }
-
-                else if (facing === 'up' && !player.body.blocked.up) {
-                    player.body.velocity.y = -200;
-                }
-
-                else if (facing === 'down' && !player.body.blocked.down) {
-                    player.body.velocity.y = 200;
-
-                } else {
-                    player.body.velocity.x = 0;
-                    player.body.velocity.y = 0;
-
-                    if (facing != 'idle')
-                    {
-                        player.animations.stop();
-                    }
-                }
-
-        } else {
+	enemy.body.velocity.x = 0;
+	enemy.body.velocity.y = 0;
+  
             if (cursors.left.isDown)
             {
                 player.body.velocity.x = -200;
@@ -194,7 +170,7 @@ window.onload = function() {
                 }
             }
 
-            if (a.isDown)
+            else if (a.isDown)
             {
                 enemy.body.velocity.x = -200;
         
@@ -243,10 +219,6 @@ window.onload = function() {
             }
         }
         
-        if (map.getTileWorldXY(player.x, player.y, map.tileWidth, map.tileHeight, ice) && player.body.velocity.x === 0
-            &&  player.body.velocity.y === 0) {
-                colliding = false;
-        }
 
         if (player.x > 636 && player.y < 70 && hasFlag) {
             music.stop();
