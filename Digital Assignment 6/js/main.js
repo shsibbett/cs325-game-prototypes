@@ -217,7 +217,7 @@ window.onload = function() {
                     enemy.animations.stop();
                 }
             }
-        }
+        
         
 
         if (player.x > 636 && player.y < 70 && hasFlag) {
