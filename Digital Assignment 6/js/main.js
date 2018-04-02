@@ -69,7 +69,7 @@ window.onload = function() {
         createMap();
         createPlayer();
 
-        enemy = game.add.sprite(730, 20, 'enemy');
+        enemy = game.add.sprite(720, 20, 'enemy');
         game.physics.arcade.enable(enemy);
         player.body.collideWorldBounds = true;
         player.body.setSize(24, 24, 5, 16);
@@ -186,7 +186,7 @@ window.onload = function() {
                     facing = 'down';
                 }
             }
-            else
+            else if (!cursors.left.isDown && !cursors.right.isDown && !cursors.up.isDown&& !cursors.down.isDown) 
             {
                 if (facing != 'idle')
                 {
