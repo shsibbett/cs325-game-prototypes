@@ -112,7 +112,7 @@ window.onload = function() {
         game.physics.arcade.collide(player, tent);
         game.physics.arcade.overlap(player, flag, collectFlag, null, this);
 
-	game.physic.arcade.collide(enemy, rocks, collision, null, this);
+	game.physics.arcade.collide(enemy, rocks, collision, null, this);
 	game.physics.arcade.collide(enemy, tent);
 
         game.input.enabled = true;
