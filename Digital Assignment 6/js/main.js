@@ -17,13 +17,10 @@ window.onload = function() {
         game.load.tilemap('DA6', 'assets/DA6v2.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('tileset1', 'assets/dark_forest.png');
         game.load.image('tileset2', 'assets/light_forest.png');
-        //game.load.image('tileset3', 'assets/!TS_WATER tp tile sheet.png');
-        game.load.spritesheet('player', 'assets/Hikers_overworlds.png', 31.6, 32);
-        game.load.spritesheet('enemy', 'assets/MainGuySpriteSheet.png', 41.3, 36);
-        //game.load.image('flag', 'assets/b6fdc68bf6bdd78.png');
-        //game.load.image('tent', 'assets/TentFF1.png');
-        //game.load.audio('music', 'assets/Pokemon- Heart Gold and Soul Silver- Ice PathCave- Music.mp3');
-        //game.load.audio('crack', 'assets/crack.mp3');
+        game.load.spritesheet('person', 'assets/Hikers_overworlds.png', 31.6, 32);
+        game.load.spritesheet('monster', 'assets/werewolf.png', 49.3, 49.2);
+        game.load.audio('music', 'assets/Castlevania NES Music_ Stalker.mp3');
+        game.load.audio('growl', 'assets/Werewolf Growl.mp3');
     
     }
     
@@ -34,18 +31,24 @@ window.onload = function() {
     var trees;
     var rocks;
 
-    var player;
-    var enemy;
+    var person;
+    var monster;
 
-    //var music;
+    var music;
+    var growl;
 
     var current_player;
     var person_turns;
     var monster_turns;
+    var timeLeftText;
+    var personTimeText;
+
+    var timeLeft = 60;
     var turnsLeft = 0;
+    var time = 5;
 
     var personsTurn = true;
-    //var monstersTurn = false;
+    var eaten = false;
 
     var facing = 'down';
     var facing2 = 'down2';
@@ -63,14 +66,16 @@ window.onload = function() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
     
         createMap();
-        createPlayer();
-        createEnemy();
+        createPerson();
+        createMonster();
 
         game.physics.arcade.enable(trees);
         game.physics.arcade.enable(rocks);
         
-        //music = game.add.audio('music');
-        //music.loop = true;
+        music = game.add.audio('music');
+        music.loop = true;
+
+        growl = game.add.audio('growl');
     
         cursors = game.input.keyboard.createCursorKeys();
 
@@ -81,243 +86,420 @@ window.onload = function() {
         
         turnsLeft = game.rnd.integerInRange(1, 6);
 
+        createTimer();
         createTurnsText();
-        //music.play();
+        personTimer();
+
+        music.play();
     }
     
     function update() {
-        game.physics.arcade.collide(player, trees);
-        game.physics.arcade.collide(player, rocks);
+        game.physics.arcade.collide(person, trees);
+        game.physics.arcade.collide(person, rocks);
 
-        game.physics.arcade.collide(enemy, trees);
-	    game.physics.arcade.collide(enemy, rocks);
+        game.physics.arcade.collide(monster, trees);
+	    game.physics.arcade.collide(monster, rocks);
         
-        game.physics.arcade.collide(player, enemy);
+        game.physics.arcade.collide(person, monster);
 
         if (personsTurn) {
-            person_turns.text = 'Turns: ' + turnsLeft;
 
-            if (turnsLeft > 0) {
+            person_turns.text = 'Moves: ' + turnsLeft;
+
+            if (turnsLeft > 0 && time > 0) {
 
                 if (cursors.left.isDown) {
+                    time = 5;
                     cursors.left.isDown = false;
 
-                    if (!map.getTileWorldXY(player.x - 32, player.y, map.tileWidth, map.tileHeight, trees)) {
-                        if (map.getTileWorldXY(player.x - 32, player.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(player.x - 64, player.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
-                            var x = player.x;
-                            player.x = x - 64;
+                    if (!map.getTileWorldXY(person.x - 32, person.y, map.tileWidth, map.tileHeight, trees)) {
+                        if (map.getTileWorldXY(person.x - 32, person.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x - 64, person.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x - 64, person.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
+                            var x = person.x;
+                            person.x = x - 64;
 
                             if (facing != 'left') {
-                                player.animations.play('left');
+                                person.animations.play('left');
                                 facing = 'left';
                             }
 
                             turnsLeft -= 2;
-                            person_turns.text = 'Turns: ' + turnsLeft;
-                        } else if (!map.getTileWorldXY(player.x - 32, player.y, map.tileWidth, map.tileHeight, rocks)){
+                            person_turns.text = 'Moves: ' + turnsLeft;
+                        } else if (map.getTileWorldXY(person.x - 32, person.y, map.tileWidth, map.tileHeight, rocks) && map.getTileWorldXY(person.x - 64, person.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x - 96, person.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 4) {
+                            var x = person.x;
+                            person.x = x - 96;
 
-                            var x = player.x;
-                            player.x = x - 32;
-                
-                            if (facing != 'left') {
-                                player.animations.play('left');
+                            //if (facing != 'left') {
+                                person.animations.play('left');
                                 facing = 'left';
-                            }
+                            //}
+
+                            turnsLeft -= 4;
+                            person_turns.text = 'Moves: ' + turnsLeft;
+                        } else if (!map.getTileWorldXY(person.x - 32, person.y, map.tileWidth, map.tileHeight, rocks)){
+
+                            var x = person.x;
+                            person.x = x - 32;
+                
+                            //if (facing != 'left') {
+                                person.animations.play('left');
+                                facing = 'left';
+                            //}
 
                             turnsLeft--;
-                            person_turns.text = 'Turns: ' + turnsLeft;
+                            person_turns.text = 'Moves: ' + turnsLeft;
                         }
                     }
                 } else if (cursors.right.isDown) {
+                    time = 5;
                     cursors.right.isDown = false;
                         
-                    if (!map.getTileWorldXY(player.x + 32, player.y, map.tileWidth, map.tileHeight, trees)) {
-                        if (map.getTileWorldXY(player.x + 32, player.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(player.x + 64, player.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
-                            var x = player.x;
-                            player.x = x + 64;
+                    if (!map.getTileWorldXY(person.x + 32, person.y, map.tileWidth, map.tileHeight, trees)) {
+                        if (map.getTileWorldXY(person.x + 32, person.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x + 64, person.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x + 64, person.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
+                            var x = person.x;
+                            person.x = x + 64;
 
-                            if (facing != 'right') {
-                                player.animations.play('right');
+                            //if (facing != 'right') {
+                                person.animations.play('right');
                                 facing = 'right';
-                            }
+                            //}
 
                             turnsLeft -= 2;
-                            person_turns.text = 'Turns: ' + turnsLeft;
-                        } else if (!map.getTileWorldXY(player.x + 32, player.y, map.tileWidth, map.tileHeight, rocks)) {
-                            var x = player.x;
-                            player.x = x + 32;
-                
-                            if (facing != 'right') {
-                                player.animations.play('right');
+                            person_turns.text = 'Moves: ' + turnsLeft;
+                        } else if (map.getTileWorldXY(person.x + 32, person.y, map.tileWidth, map.tileHeight, rocks) && map.getTileWorldXY(person.x + 64, person.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x + 96, person.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 4) {
+                            var x = person.x;
+                            person.x = x + 96;
+
+                            //if (facing != 'right') {
+                                person.animations.play('right');
                                 facing = 'right';
-                            }
+                            //}
+
+                            turnsLeft -= 4;
+                            person_turns.text = 'Moves: ' + turnsLeft;
+                        } else if (!map.getTileWorldXY(person.x + 32, person.y, map.tileWidth, map.tileHeight, rocks)){
+
+                            var x = person.x;
+                            person.x = x + 32;
+                
+                            //if (facing != 'right') {
+                                person.animations.play('right');
+                                facing = 'right';
+                            //}
 
                             turnsLeft--;
-                            person_turns.text = 'Turns: ' + turnsLeft;
+                            person_turns.text = 'Moves: ' + turnsLeft;
                         }
                     }
                 } else if (cursors.up.isDown) {
+                    time = 5;
                     cursors.up.isDown = false;
 
-                    if (!map.getTileWorldXY(player.x, player.y - 32, map.tileWidth, map.tileHeight, trees)) {
-                        if (map.getTileWorldXY(player.x, player.y - 32, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(player.x, player.y - 64, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
-                            var y = player.y;
-                            player.y = y - 64;
+                    if (!map.getTileWorldXY(person.x, person.y - 32, map.tileWidth, map.tileHeight, trees)) {
+                        if (map.getTileWorldXY(person.x, person.y - 32, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x, person.y - 64, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x, person.y - 64, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
+                            var y = person.y;
+                            person.y = y - 64;
 
-                            if (facing != 'right') {
-                                player.animations.play('right');
-                                facing = 'right';
-                            }
+                            //if (facing != 'up') {
+                                person.animations.play('up');
+                                facing = 'up';
+                            //}
 
                             turnsLeft -= 2;
-                            person_turns.text = 'Turns: ' + turnsLeft;
-                        } else if (!map.getTileWorldXY(player.x, player.y - 32, map.tileWidth, map.tileHeight, rocks)) {
-                            var y = player.y;
-                            player.y = y - 32; 
+                            person_turns.text = 'Moves: ' + turnsLeft;
+                        } else if (map.getTileWorldXY(person.x, person.y - 32, map.tileWidth, map.tileHeight, rocks) && map.getTileWorldXY(person.x, person.y - 64, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x, person.y - 96, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 4) {
+                            var y = person.y;
+                            person.y = y - 96;
 
-                            if (facing != 'up') {
-                                player.animations.play('up');
+                            //if (facing != 'up') {
+                                person.animations.play('up');
                                 facing = 'up';
-                            }
+                            //}
+
+                            turnsLeft -= 4;
+                            person_turns.text = 'Moves: ' + turnsLeft;
+                        } else if (!map.getTileWorldXY(person.x, person.y - 32, map.tileWidth, map.tileHeight, rocks)){
+
+                            var y = person.y;
+                            person.y = y - 32;
+                
+                            //if (facing != 'up') {
+                                person.animations.play('up');
+                                facing = 'up';
+                            //}
 
                             turnsLeft--;
-                            person_turns.text = 'Turns: ' + turnsLeft;
+                            person_turns.text = 'Moves: ' + turnsLeft;
                         }
                     }
                 } else if (cursors.down.isDown) {
+                    time = 5;
                     cursors.down.isDown = false;
                         
-                    if (!map.getTileWorldXY(player.x, player.y + 32, map.tileWidth, map.tileHeight, trees)) {
-                        if (map.getTileWorldXY(player.x, player.y + 32, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(player.x, player.y + 64, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
-                            var y = player.y;
-                            player.y = y + 64;
+                    if (!map.getTileWorldXY(person.x, person.y + 32, map.tileWidth, map.tileHeight, trees)) {
+                        if (map.getTileWorldXY(person.x, person.y + 32, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x, person.y + 64, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x, person.y + 64, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
+                            var y = person.y;
+                            person.y = y + 64;
 
-                            if (facing != 'right') {
-                                player.animations.play('right');
-                                facing = 'right';
-                            }
+                            //if (facing != 'down') {
+                                person.animations.play('down');
+                                facing = 'down';
+                            //}
 
                             turnsLeft -= 2;
-                            person_turns.text = 'Turns: ' + turnsLeft;
-                        } else if (!map.getTileWorldXY(player.x, player.y + 32, map.tileWidth, map.tileHeight, rocks)) {
-                            var y = player.y;
-                            player.y = y + 32;
+                            person_turns.text = 'Moves: ' + turnsLeft;
+                        } else if (map.getTileWorldXY(person.x, person.y + 32, map.tileWidth, map.tileHeight, rocks) && map.getTileWorldXY(person.x, person.y + 64, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(person.x, person.y + 96, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 4) {
+                            var y = person.y;
+                            person.y = y + 96;
 
-                            if (facing != 'down') {
-                                player.animations.play('down');
+                            //if (facing != 'down') {
+                                person.animations.play('down');
                                 facing = 'down';
-                            }
+                            //}
+
+                            turnsLeft -= 4;
+                            person_turns.text = 'Moves: ' + turnsLeft;
+                        } else if (!map.getTileWorldXY(person.x, person.y + 32, map.tileWidth, map.tileHeight, rocks)){
+
+                            var y = person.y;
+                            person.y = y + 32;
+                
+                            //if (facing != 'down') {
+                                person.animations.play('down');
+                                facing = 'down';
+                            //}
 
                             turnsLeft--;
-                            person_turns.text = 'Turns: ' + turnsLeft;
+                            person_turns.text = 'Moves: ' + turnsLeft;
                         }
                     }
                 } else {
                         if (facing != 'idle') {
-                            player.animations.stop();
+                            person.animations.stop();
                         }
                     }
 
                 } else {
-                    player.animations.stop();
+                    person.animations.stop();
                     switchPlayers();
                 }
             } else {
-                monster_turns.text = 'Turns: ' + turnsLeft;
+                monster_turns.text = 'Moves: ' + turnsLeft;
 
                 if (turnsLeft > 0) {
                     if (a.isDown)
                     {
                         a.isDown = false;
 
-                        if (!map.getTileWorldXY(enemy.x - 32, enemy.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(enemy.x - 32, enemy.y, map.tileWidth, map.tileHeight, trees)) {
-                            var x = enemy.x;
-                            enemy.x = x - 32;
-                
-                            if (facing2 != 'left2')
-                            {
-                                enemy.animations.play('left2');
-                                facing2 = 'left2';
+                        if (!map.getTileWorldXY(monster.x - 32, monster.y, map.tileWidth, map.tileHeight, trees)) {
+                            if (map.getTileWorldXY(monster.x - 32, monster.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x - 64, monster.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x - 64, monster.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
+                                var x = monster.x;
+                                monster.x = x - 64;
+    
+                                if (facing2 != 'left2') {
+                                    monster.animations.play('left2');
+                                    facing2 = 'left2';
+                                }
+    
+                                turnsLeft -= 2;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
+                            } else if (map.getTileWorldXY(monster.x - 32, monster.y, map.tileWidth, map.tileHeight, rocks) && map.getTileWorldXY(monster.x - 64, monster.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x - 96, monster.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 4) {
+                                var x = monster.x;
+                                monster.x = x - 96;
+    
+                                //if (facing2 != 'left2') {
+                                    monster.animations.play('left2');
+                                    facing2 = 'left2';
+                                //}
+    
+                                turnsLeft -= 4;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
+                            } else if (!map.getTileWorldXY(monster.x - 32, monster.y, map.tileWidth, map.tileHeight, rocks)){
+    
+                                var x = monster.x;
+                                monster.x = x - 32;
+                    
+                                //if (facing2 != 'left2') {
+                                    monster.animations.play('left2');
+                                    facing2 = 'left2';
+                                //}
+    
+                                turnsLeft--;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
                             }
-                            
-                            turnsLeft--;
-                            monster_turns.text = 'Turns: ' + turnsLeft;
                         }
                     }
                     else if (d.isDown)
                     {
                         d.isDown = false;
                         
-                        if (!map.getTileWorldXY(enemy.x + 32, enemy.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(enemy.x + 32, enemy.y, map.tileWidth, map.tileHeight, trees)) {
-                            var x = enemy.x;
-                            enemy.x = x + 32;
-                
-                            if (facing2 != 'right2')
-                            {
-                                enemy.animations.play('right2');
-                                facing2 = 'right2';
+                        if (!map.getTileWorldXY(monster.x + 32, monster.y, map.tileWidth, map.tileHeight, trees)) {
+                            if (map.getTileWorldXY(monster.x + 32, monster.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x + 64, monster.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x + 64, monster.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
+                                var x = monster.x;
+                                monster.x = x + 64;
+    
+                                //if (facing2 != 'right2') {
+                                    monster.animations.play('right2');
+                                    facing2 = 'right2';
+                                //}
+    
+                                turnsLeft -= 2;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
+                            } else if (map.getTileWorldXY(monster.x + 32, monster.y, map.tileWidth, map.tileHeight, rocks) && map.getTileWorldXY(monster.x + 64, monster.y, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x + 96, monster.y, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 4) {
+                                var x = monster.x;
+                                monster.x = x + 96;
+    
+                                //if (facing2 != 'right2') {
+                                    monster.animations.play('right2');
+                                    facing2 = 'right2';
+                                //}
+    
+                                turnsLeft -= 4;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
+                            } else if (!map.getTileWorldXY(monster.x + 32, monster.y, map.tileWidth, map.tileHeight, rocks)){
+    
+                                var x = monster.x;
+                                monster.x = x + 32;
+                    
+                                //if (facing2 != 'right2') {
+                                    monster.animations.play('right2');
+                                    facing2 = 'right2';
+                                //}
+    
+                                turnsLeft--;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
                             }
-
-                            turnsLeft--;
-                            monster_turns.text = 'Turns: ' + turnsLeft;
                         }
                     }
                     else if (w.isDown)
                     {
                         w.isDown = false;
-
-                        if (!map.getTileWorldXY(enemy.x, enemy.y -32, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(enemy.x, enemy.y - 32, map.tileWidth, map.tileHeight, trees)) {
-                            var y = enemy.y;
-                            enemy.y = y - 32; 
-
-                            if (facing2 != 'up2')
-                            {
-                                enemy.animations.play('up2');
-                                facing2 = 'up2';
+                        if (!map.getTileWorldXY(monster.x, monster.y - 32, map.tileWidth, map.tileHeight, trees)) {
+                            if (map.getTileWorldXY(monster.x, monster.y - 32, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x, monster.y - 64, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x, monster.y - 64, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
+                                var y = monster.y;
+                                monster.y = y - 64;
+    
+                                //if (facing2 != 'up2') {
+                                    monster.animations.play('up2');
+                                    facing2 = 'up2';
+                                //}
+    
+                                turnsLeft -= 2;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
+                            } else if (map.getTileWorldXY(monster.x, monster.y - 32, map.tileWidth, map.tileHeight, rocks) && map.getTileWorldXY(monster.x, monster.y - 64, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x, monster.y - 96, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 4) {
+                                var y = monster.y;
+                                monster.y = y - 96;
+    
+                                //if (facing2 != 'up2') {
+                                    monster.animations.play('up2');
+                                    facing2 = 'up2';
+                                //}
+    
+                                turnsLeft -= 4;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
+                            } else if (!map.getTileWorldXY(monster.x, monster.y - 32, map.tileWidth, map.tileHeight, rocks)){
+    
+                                var y = monster.y;
+                                monster.y = y - 32;
+                    
+                                //if (facing2 != 'up2') {
+                                    monster.animations.play('up2');
+                                    facing2 = 'up2';
+                                //}
+    
+                                turnsLeft--;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
                             }
-
-                            turnsLeft--;
-                            monster_turns.text = 'Turns: ' + turnsLeft;
                         }
                     }
                     else if (s.isDown)
                     {
                         s.isDown = false;
                         
-                        if (!map.getTileWorldXY(enemy.x, enemy.y + 32, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(enemy.x, enemy.y + 32, map.tileWidth, map.tileHeight, trees)) {
-                            var y = enemy.y;
-                            enemy.y = y + 32;
-
-                            if (facing2 != 'down2')
-                            {
-                                enemy.animations.play('down2');
-                                facing2 = 'down2';
+                        if (!map.getTileWorldXY(monster.x, monster.y + 32, map.tileWidth, map.tileHeight, trees)) {
+                            if (map.getTileWorldXY(monster.x, monster.y + 32, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x, monster.y + 64, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x, monster.y + 64, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 2) {
+                                var y = monster.y;
+                                monster.y = y + 64;
+    
+                                //if (facing2 != 'down2') {
+                                    monster.animations.play('down2');
+                                    facing2 = 'down2';
+                                //}
+    
+                                turnsLeft -= 2;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
+                            } else if (map.getTileWorldXY(monster.x, monster.y + 32, map.tileWidth, map.tileHeight, rocks) && map.getTileWorldXY(monster.x, monster.y + 64, map.tileWidth, map.tileHeight, rocks) && !map.getTileWorldXY(monster.x, monster.y + 96, map.tileWidth, map.tileHeight, trees) && turnsLeft >= 4) {
+                                var y = monster.y;
+                                monster.y = y + 96;
+    
+                                //if (facing2 != 'down2') {
+                                    monster.animations.play('down2');
+                                    facing2 = 'down2';
+                                //}
+    
+                                turnsLeft -= 4;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
+                            } else if (!map.getTileWorldXY(monster.x, monster.y + 32, map.tileWidth, map.tileHeight, rocks)){
+    
+                                var y = monster.y;
+                                monster.y = y + 32;
+                    
+                                //if (facing2 != 'down2') {
+                                    monster.animations.play('down2');
+                                    facing2 = 'down2';
+                                //}
+    
+                                turnsLeft--;
+                                monster_turns.text = 'Moves: ' + turnsLeft;
                             }
-
-                            turnsLeft--;
-                            monster_turns.text = 'Turns: ' + turnsLeft;
                         }
                     }
                     else
                     {
                         if (facing2 != 'idle')
                         {
-                            enemy.animations.stop();
+                            monster.animations.stop();
                         }
                     }
                 } else {
-                    enemy.animations.stop();
+                    monster.animations.stop();
                     switchPlayers();
                 }
             }
         
 
-        if (Math.abs(player.x - enemy.x) < 20 && Math.abs(player.y - enemy.y) < 20) {
-            //music.stop();
+        if (Math.abs(person.x - monster.x) < 20 && Math.abs(person.y - monster.y) < 20) {
+            music.stop();
 
-            player.kill();
+            if (!eaten) {
+                growl.play();
+            }
+            
+            person.kill();
+            eaten = true;
+
+            personTimeText.kill();
+            person_turns.kill();
+            monster_turns.kill();
+            timeLeftText.kill();
 
             var text = game.add.text(game.width / 2, game.height / 2, 'Monster wins!');
+            text.align = 'center';
+            text.fixedToCamera = true;
+            text.anchor.setTo(0.5, 0.5);
+
+            text.font = 'Arial Black';
+            text.fontSize = 68;
+            text.fontWeight = 'bold';
+
+            text.stroke = '#000000';
+            text.strokeThickness = 6;
+            text.fill = '#FFFFFF';
+        }
+
+        if (timeLeftText === 0) {
+            monster.kill();
+
+            var text = game.add.text(game.width / 2, game.height / 2, 'The Hunted wins!');
             text.align = 'center';
             text.fixedToCamera = true;
             text.anchor.setTo(0.5, 0.5);
@@ -337,14 +519,11 @@ window.onload = function() {
     
         map.addTilesetImage('Picture1', 'tileset1');
         map.addTilesetImage('light_forest', 'tileset2');
-        //map.addTilesetImage('water', 'tileset3');
 
         grass = map.createLayer('Grass');
         background = map.createLayer('Background');
         trees = map.createLayer('Trees');
         rocks = map.createLayer('Rocks');
-        //snow = map.createLayer('Snow');
-        //background = map.createLayer('Background 2');
         
         map.setCollisionBetween(1, 3000, true, 'Trees');
         map.setCollisionBetween(1, 3000, true, 'Rocks');
@@ -352,34 +531,38 @@ window.onload = function() {
         grass.resizeWorld();
     }
 
-    function createPlayer() {
-        player = game.add.sprite(752, 32, 'player');
+    function createPerson() {
+        person = game.add.sprite(752, 32, 'person');
 
-        game.physics.arcade.enable(player);
-        player.body.collideWorldBounds = true;
-        //player.body.setSize(16, 16, 5, 16);
-        player.scale.setTo(1.5, 1.5);
-        player.anchor.setTo(0.5, 0.5);
+        game.physics.arcade.enable(person);
+        person.body.collideWorldBounds = true;
+        //person.body.setSize(16, 16, 5, 16);
+        person.scale.setTo(1.5, 1.5);
+        person.anchor.setTo(0.5, 0.5);
     
-        player.animations.add('left', [3, 6, 9], 5, true);
-        //player.animations.add('turn', [4], 20, true);
-        player.animations.add('right', [1, 4, 7], 5, true);
-        player.animations.add('up', [0, 2, 10], 5, true);
-        player.animations.add('down', [5, 8, 11], 5, true);
+        person.animations.add('left', [3, 6, 9], 5, true);
+        //person.animations.add('turn', [4], 20, true);
+        person.animations.add('right', [1, 4, 7], 5, true);
+        person.animations.add('up', [0, 2, 10], 5, true);
+        person.animations.add('down', [5, 8, 11], 5, true);
+
+        person.animations.play('down');
     }
 
-    function createEnemy() {
-        enemy = game.add.sprite(52, 35, 'enemy');
-        game.physics.arcade.enable(enemy);
-        enemy.body.collideWorldBounds = true;
-        //enemy.body.setSize(24, 24, 5, 16);
-        enemy.anchor.setTo(0.5, 0.5);
+    function createMonster() {
+        monster = game.add.sprite(52, 35, 'monster');
+        game.physics.arcade.enable(monster);
+        monster.body.collideWorldBounds = true;
+        //monster.body.setSize(24, 24, 5, 16);
+        monster.anchor.setTo(0.5, 0.5);
     
-        enemy.animations.add('left2', [9, 10, 11], 5, true);
-        //player.animations.add('turn', [4], 20, true);
-        enemy.animations.add('right2', [3, 4, 5], 5, true);
-        enemy.animations.add('up2', [6, 7, 8], 5, true);
-        enemy.animations.add('down2', [0, 1, 2], 5, true);
+        monster.animations.add('left2', [0, 7, 15, 24], 5, true);
+        //person.animations.add('turn', [4], 20, true);
+        monster.animations.add('right2', [2, 9, 17, 26], 5, true);
+        monster.animations.add('up2', [3, 10, 18, 27], 5, true);
+        monster.animations.add('down2', [1, 8, 16, 25], 5, true);
+
+        monster.animations.play('down2');
     }
 
     function switchPlayers() {
@@ -404,10 +587,15 @@ window.onload = function() {
             fadeIn.chain(fadeOut);
             fadeIn.start();
 
+            personTimeText.alpha = 0;
+            time = 5;
+
+            person_turns.text = 'Moves: ' + 0;
+
             personsTurn = false;
             turnsLeft = game.rnd.integerInRange(1, 6);
         } else {
-            var message = game.add.text(game.width / 2, game.height / 2, 'Person' + 's turn!', { fontSize: '28px', fill: '#000' });
+            var message = game.add.text(game.width / 2, game.height / 2, 'The Hunted' + 's turn!', { fontSize: '28px', fill: '#000' });
             message.fixedToCamera = true;
             message.anchor.setTo(0.5, 0.5);
             message.alpha = 1;
@@ -427,13 +615,79 @@ window.onload = function() {
             fadeIn.chain(fadeOut);
             fadeIn.start();
 
+            personTimeText.alpha = 1;
+
             personsTurn = true;
             turnsLeft = game.rnd.integerInRange(1, 6);
         }
     }
 
+    function createTimer() {
+        timeLeftText = game.add.text(game.width / 2, 20, 'Time remaining: 60');
+        timeLeftText.align = 'center';
+        timeLeftText.fixedToCamera = true;
+        timeLeftText.anchor.setTo(0.5, 0.5);
+
+        timeLeftText.font = 'Arial Black';
+        timeLeftText.fontSize = 24;
+        timeLeftText.fontWeight = 'bold';
+
+        timeLeftText.stroke = '#000000';
+        timeLeftText.strokeThickness = 6;
+        timeLeftText.fill = '#FFFFFF';
+
+        //custom timer code from http://phaser.io/examples/v2/time/basic-looped-event
+        game.time.events.loop(Phaser.Timer.SECOND, updateTimeLeft, this);
+    }
+
+    function updateTimeLeft() {
+        if (!eaten) {
+            timeLeft--;
+        }
+        timeLeftText.text = 'Time remaining: ' + timeLeft;
+    }
+
+    function personTimer() {
+        personTimeText = game.add.text(game.width / 2, 585, time, { fontSize: '24px', fill: '#000' });
+        personTimeText.fixedToCamera = true;
+        personTimeText.anchor.setTo(0.5, 0.5);
+        personTimeText.alpha = 1;
+
+        personTimeText.font = 'Arial Black';
+        personTimeText.fontWeight = 'bold';
+
+        personTimeText.stroke = '#000000';
+        personTimeText.strokeThickness = 6;
+        personTimeText.fill = '#FFFFFF';
+    
+        //alpha text tween code from https://phaser.io/examples/v2/tweens/alpha-text
+        // var fadeIn = game.add.tween(personTimeText).to( { alpha: 1 }, 250, "Linear", true);
+        // var fadeOut = game.add.tween(personTimeText).to( { alpha: 0 }, 250, "Linear", true);
+    
+        // //tween chain code from https://phaser.io/examples/v2/tweens/chained-tweens
+        // fadeIn.chain(fadeOut);
+        // fadeIn.start();
+
+        game.time.events.loop(Phaser.Timer.SECOND, updatePersonTimer, this);
+    }
+
+    function updatePersonTimer() {
+        if (personsTurn && !eaten) {
+            time--;
+        }
+
+        personTimeText.text = time;
+
+        //var fadeIn = game.add.tween(personTimeText).to( { alpha: 1 }, 1000, "Linear", true);
+        //var fadeOut = game.add.tween(personTimeText).to( { alpha: 0 }, 1000, "Linear", true);
+    
+        //tween chain code from https://phaser.io/examples/v2/tweens/chained-tweens
+        //fadeIn.chain(fadeOut);
+        //fadeIn.start();
+    }
+
     function createTurnsText() {
-        person_turns = game.add.text(725, 585, 'Turns: ' + turnsLeft, { fontSize: '24px', fill: '#000' });
+        person_turns = game.add.text(725, 585, 'Moves: ' + turnsLeft, { fontSize: '24px', fill: '#000' });
         person_turns.fixedToCamera = true;
         person_turns.anchor.setTo(0.5, 0.5);
 
@@ -444,7 +698,7 @@ window.onload = function() {
         person_turns.strokeThickness = 6;
         person_turns.fill = '#FFFFFF';
 
-        monster_turns = game.add.text(70, 585, 'Turns: ' + turnsLeft, { fontSize: '24px', fill: '#000' });
+        monster_turns = game.add.text(70, 585, 'Moves: 0', { fontSize: '24px', fill: '#000' });
         monster_turns.fixedToCamera = true;
         monster_turns.anchor.setTo(0.5, 0.5);
 

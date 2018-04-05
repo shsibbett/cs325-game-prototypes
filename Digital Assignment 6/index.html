@@ -22,20 +22,23 @@ body
 <body>
 <div id="game"></div>
 <div id="readme">
-<h2>Digital Assignment 6</h2>
+<h2>Manhunt</h2>
 
 <ul>
 <li><strong>Originality:</strong>
 What is original about your game?
 <ul>
-    
+    <li>This is a two-player game that requires each player to try and outwit the other.</li>
+    <li>Both players get a random number of moves that they can use to move across the board.</li>
+    <li>They can also jump over certain obstacles (currently only rocks).</li>
 </ul>
 </li>
 
 <li><strong>Technical Merit:</strong>
 What is interesting about your game technology?
 <ul>
-
+    <li>This prototype utilizes a player switching mechanic that switches control to the other player when they run out of moves or (in the Hunted's case) if they run out of time during their turn.</li>
+    <li>As the Hunted could win by simply stalling on their turn, they have 5 seconds from the time they made their last move to make another move before control switches to the Monster.</li>
 </ul>
 </li>
 
@@ -43,13 +46,19 @@ What is interesting about your game technology?
 What did you learn from this prototype?
 What was the easiest or hardest part of making it?
 <ul>
-
+    <li>I learned how to make a turn-based system.</li>
+    <li>The easiest part was coding the basic movement from tile to tile.</li>
+    <li>The hardest part was coding when the player's sprites would be allowed to jump over rocks. There were multiple cases that I had to account for.</li>
 </ul>
 </li>
 
 <li><strong>Prototype Assets:</strong>
 Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
 <ul>
+        <li><a href="http://capx.wikia.com/wiki/Trainer_Classes">Hiker</a> sprite</li>
+    <li><a href="https://www.pinterest.com/pin/204632376801609645/">Werewolf</a> sprite sheet</li>
+    <li><a href="https://www.youtube.com/watch?v=WW0fSo7P7CE">Music</a>: Stalker from Castlevania</li>
+    <li><a href="https://www.youtube.com/watch?v=0yeTjsN7FLY">Growl</a> sound effect</li>
     <li><a href="http://www.mapeditor.org/">Tiled</a> was used to create the tilemap.</li>
     <li><a href="https://opengameart.org/content/32x32-and-16x16-rpg-tiles-forest-and-some-interior-tiles">Forest Tileset</a> I used for the grass, rocks, and trees.</li>
 </ul>
@@ -58,8 +67,9 @@ Did you make your prototype assets from scratch? Did you borrow them? Cite your 
 <li><strong>Prototype Closest Other Game:</strong>
 Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
 <ul>
-    <li>I was partially inspired by the ice puzzles that are found in some of the Pokemon games.</li>
-    <li>Player movement code was taken from the Phaser <a href="http://phaser.io/examples/v2/games/starstruck#gv">Starstruck</a> example.</li>
+    <li>This game is similar to turn-based strategy games.</li>
+    <li>The Phaser <a href="http://phaser.io/examples/v2/time/basic-looped-event">Timer</a> example was used for the game time limit and the Hunted's turn time limit.</li>
+    <li>Text animation taken from Phaser <a href="https://phaser.io/examples/v2/tweens/alpha-text">Tween</a> example and the <a href="https://phaser.io/examples/v2/tweens/chained-tweens">Chain</a> example.</li>
     <li>Code I used to <a href="http://www.html5gamedevs.com/topic/25045-sprite-overlaping-with-tilemap-overlap-not-working/">check if a sprite overlapped with a tilemap layer</a></li>
 </ul>
 </li>
@@ -67,35 +77,39 @@ Which other game most closely resembles your game? If you are borrowing code fro
 <li><strong>High Concept:</strong>
 A one-sentence summary of your game.
 <ul>
-
+    <li>A hiker who has become lost in the woods is hunted by a blood thirsty monster and must outrun it before it eats him.</li>
 </ul>
 </li>
 
 <li><strong>Theme:</strong>
 State which of the Storymatic themes you used.
 <ul>
-    <li>I used the ice theme.</li>
+    <li>No themes were used for this prototype.</li>
 </ul>
 </li>
 
 <li><strong>Mandated Variety:</strong>
 State which input, randomness, genre, and play style you used in this prototype.
 <ul>
-
+    <li>The Hunted moves by using the arrow keys while the Monster moves with WASD.</li>
+    <li>An element of randomness is the number of moves each player gets per turn.</li>
+    <li>The genre is turn-based strategy.</li>
+    <li>The playstyle is that the players must utilize their moves efficiently to be able to outrun/eat the other player.</li>
 </ul>
 </li>
 
 <li><strong>Prototype Goal:</strong>
 What game mechanic is this prototype evaluating?
 <ul>
-    
+    <li>The turn-based mechanic.</li>
+    <li>The chase mechanic.</li>
 </ul>
 </li>
 
 <li><strong>Player Experience Goals:</strong>
 What experience do you want players to have when playing your game?
 <ul>
-    
+    <li>Players should have a strategic experience where they consider their every move.</li>
 </ul>
 </li>
 
@@ -104,14 +118,26 @@ A paragraph describing the actions the player can perform, the system dynamics, 
 explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the 
 prototype. You may include mock-up images for parts of the game not in the prototype.
 <ul>
-
+    <li>This game requires two players: a Hiker being Hunted, and a Monster.</li>
+    <li>It is the Monster's goal to catch up with and eat the Hunted; it is the Hunted's goal to survive until the time limit is up.</li>
+    <li>The Hunted always goes first and moves with the arrow keys.</li>
+    <li>The Monster moves with WASD.</li>
+    <li>On each players' turn, they recieve a random number of moves between 1 and 6.</li>
+    <li>Moving up, down, left, or right requires 1 move.</li>
+    <li>Both players can jump over rocks; this requires 2 moves per rock.</li>
+    <li>Multiple rocks can be jumped over at a time, but only if the player has enought moves (e.g 4 moves are required to jump over two consecutive rocks).</li>
+    <li>All of the moves must be used.</li>
+    <li>Control switches to the other player when the current player runs out of moves.</li>
+    <li>As the Hunted could win by simply running down the clock, control switches to the Monster if they remain inactive for 5 seconds.</li>
 </ul>
 </li>
 
 <li><strong>Strategies:</strong>
 What player strategies do you expect will be effective at playing this game?
 <ul> 
-
+    <li>The Hunted should utilize the 5 seconds they have between moves to run down the clock.</li>
+    <li>The Monster should move as quickly as possible to make the most out of the time they have.</li>
+    <li>Jumping over rocks can be a very effective way of catching up with the Hunted or evading the Monster.</li>
 </ul>
 </li>
 
@@ -120,21 +146,23 @@ A paragraph about the world your game is set in and who the characters are. What
 interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
 How will the dramatic tension interact with the gameplay tension?
 <ul>
-
+    <li>A simple hiker was traveling back along one of his favorite places to hike, Lyca Trail, when he got distracted by a mysterious figure in the woods. He
+    tripped over a log, badly injuring his arm, and had to tend to his injuries before pressing on. Before the hiker knew it, darkness had fallen, and the
+    woods seemed very different from what he was used to. Suddenly, he was confronted by a large beast and knew he had to run for his life.</li>
 </ul>
 </li>
 
 <li><strong>Target Audience:</strong>
 A single sentence that describes the demographic you're trying to reach.
 <ul>
-    
+    <li>This prototype is targeted to anyone who enjoys turn-based strategy games.</li>
 </ul>
 </li>
 
 <li><strong>Play Time:</strong>
 How long does your game take to play?
 <ul>
-    
+    <li>Play time is 1 minute.</li>
 </ul>
 </li>
 
