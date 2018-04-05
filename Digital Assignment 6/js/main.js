@@ -496,11 +496,11 @@ window.onload = function() {
             text.fill = '#FFFFFF';
         }
 
-        if (timeLeftText === 0) {
+        if (timeLeft === 0) {
             music.stop();
 
             monster.kill();
-            
+
             personTimeText.kill();
             person_turns.kill();
             monster_turns.kill();
