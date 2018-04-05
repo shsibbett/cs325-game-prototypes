@@ -497,7 +497,14 @@ window.onload = function() {
         }
 
         if (timeLeftText === 0) {
+            music.stop();
+
             monster.kill();
+            
+            personTimeText.kill();
+            person_turns.kill();
+            monster_turns.kill();
+            timeLeftText.kill();
 
             var text = game.add.text(game.width / 2, game.height / 2, 'The Hunted wins!');
             text.align = 'center';
