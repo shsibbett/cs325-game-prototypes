@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Digital Assignment 7</title>
+    <script src="js/phaser.js"></script>
+    <script src="js/main.js"></script>
+
+<style>
+body
+{
+    color: #777;
+    font-family: "Avenir", Verdana, sans-serif;
+}
+#readme
+{
+    margin-top: 10px;
+}
+</style>
+
+</head>
+<body>
+<div id="game"></div>
+<div id="readme">
+<h2>Zombacalypse</h2>
+
+<ul>
+<li><strong>Originality:</strong>
+What is original about your game?
+<ul>
+    <li>This is a single-player, post-apocalyptic strategy game where the player must utilize their hours to boost their defenses before the zombie horde attacks each night.</li>
+    <li>The player must clear shrubs surrounding building before they are allowed to repair them.</li>
+    <li>Each building has a different effect to help combat the zombies.</li>
+    <li>The player must also remove corpses from their base to reduce the number of zombies in the horde increasing their chances of survival.</li>
+    <li>The number of survivors lost depends on the number of zombies that attack.</li>
+    <li>The potential size of the horde increases by 5 zombies every 3 turns.</li>
+</ul>
+</li>
+
+<li><strong>Technical Merit:</strong>
+What is interesting about your game technology?
+<ul>
+    <li>The prototype displays all the information the player could need to play the game.</li>
+    <li>The player uses the mouse to play, except when they are moving corpses which utilizes the cursor keys.</li>
+    <li>Each 'wrecked' and 'repaired' version of each building were stored in two different layers in the tilemap. When a building is repaired, the 'wrecked' building layer is destroyed, and the 'repaired' building layer is created.</li>
+    <li>The shrubs and corpses are a part of a 'shrubs' and 'corpses' group respectively. Each item in the groups was given an on click effect to remove shrubs/move corpses.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Postmortem:</strong>
+What did you learn from this prototype?
+What was the easiest or hardest part of making it?
+<ul>
+    <li>I learned how to make a game that uses the mouse instead of WASD or just the cursor keys.</li>
+    <li>I also learned how to destroy tilemap layers</li>
+    <li>I learned how to use groups in Phaser.</li>
+    <li>The easiest part was creating the groups for the shrubs and corpses.</li>
+    <li>It was also easy to destroy old tilemap layers and create new news to simulate a building being repaired.</li>
+    <li>The hardest part was thinking about how to do the corpse movement. Once it occured to me to use the cursor keys and a boolean to determine when the player could move a corpse, it wasn't that difficult.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Assets:</strong>
+Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
+<ul>
+    <li><a href="https://forum.warthunder.com/index.php?/topic/179411-foliage/&page=2">Shrub</a> sprite</li>
+    <li><a href="http://corpseparty.wikia.com/wiki/File:Sayaka%27s_Sprite.png">Corpse</a> sprite</li>
+    <li><a href="https://www.opendemocracy.net/hitoyo-nakano/tokyos-black-box-exhibition-creates-stir">Black box</a> image to fade to black.</li>
+    <li><a href="https://www.youtube.com/watch?v=ssZoq1eUK-s">Music</a>: Plants v. Zombies (Main Theme)</li>
+    <li><a href="https://www.youtube.com/watch?v=xOxBGcZRO0M">Digging</a> sound effect</li>
+    <li><a href="https://www.youtube.com/watch?v=nY6MTdmFCcE">Build</a> sound effect</li>
+    <li><a href="https://www.youtube.com/watch?v=xOxBGcZRO0M">Dragging corpse</a> sound effect</li>
+    <li><a href="https://www.youtube.com/watch?v=6tcytxUjMOs">Zombie</a> sound effect</li>
+    <li><a href="https://www.youtube.com/watch?v=wg8u3AQj1Ac">Game over</a> sound effect</li>
+    <li><a href="http://www.mapeditor.org/">Tiled</a> was used to create the tilemap.</li>
+    <li><a href="https://chaoticcherrycake.deviantart.com/art/Pokemon-Tileset-From-Public-Tiles-32x32-623246343">Pokemon Tileset</a> I used for the buildings and walls.</li>
+    <li><a href="https://sourceforge.net/p/allacrost/code/HEAD/tree/trunk/game/img/tilesets/castle_greystone_exterior_02.png">Castle Exterior Tileset</a> I used for the pavement.</li>
+    <li><a href="https://opengameart.org/content/32x32-and-16x16-rpg-tiles-forest-and-some-interior-tiles">Forest Tileset</a> I used for the grass.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Closest Other Game:</strong>
+Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
+<ul>
+    <li>This game is kind of similar to Clash of Clans where players use resourcse to upgrade facilites to become stronger against an enemy.</li>
+    <li>The Phaser <a href="https://phaser.io/examples/v2/groups/create-sprite-in-a-group">Create Sprite in a Group</a> example was used to create the shrub and corpse groups and also to add an on click event to the groups.</li>
+</ul>
+</li>
+
+<li><strong>High Concept:</strong>
+A one-sentence summary of your game.
+<ul>
+    <li>You lead a group of survivors who have stumbled across an abandoned prison facility that would be well equiped to deal with the zombie apocalypse if only it was it operational.</li>
+</ul>
+</li>
+
+<li><strong>Theme:</strong>
+State which of the Storymatic themes you used.
+<ul>
+    <li>No themes were used for this prototype.</li>
+</ul>
+</li>
+
+<li><strong>Mandated Variety:</strong>
+State which input, randomness, genre, and play style you used in this prototype.
+<ul>
+    <li>The player removes shrubs, repairs buildings, and chooses corpses to move with the mouse while corpses are moved with the cursor keys.</li>
+    <li>An element of randomness is the location of the corpses in the world map, the number of hours the player gets each turn (random number between 7-12), and  the number of zombies that could attack (random number between 25-45 to start that increases by 5 every 3 turns).</li>
+    <li>The genre is post-apocalyptic strategy.</li>
+    <li>The playstyle is that the players must utilize their hours efficiently to be able to survive long enough to repair the cell block building.</li>
+</ul>
+</li>
+
+<li><strong>Prototype Goal:</strong>
+What game mechanic is this prototype evaluating?
+<ul>
+    <li>The building repair mechanic.</li>
+    <li>The survival mechanic.</li>
+</ul>
+</li>
+
+<li><strong>Player Experience Goals:</strong>
+What experience do you want players to have when playing your game?
+<ul>
+    <li>Players should think strategically about how to spend their hours so that they can survive the horde.</li>
+</ul>
+</li>
+
+<li><strong>Gameplay:</strong>
+A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise 
+explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the 
+prototype. You may include mock-up images for parts of the game not in the prototype.
+<ul>
+    <li>This game is single-player.</li>
+    <li>It is the player's goal to repair the cell block facility before they lose all of their suvivors and are eaten by the horde.</li>
+    <li>Each turn, the player has a limited number of hours in which to clear overgrowth, repair buildings, or remove corpses (random value between 7-12).</li>
+    <li>After the player has run out of hours, a random number of zombies (starting with 25-45 zombies) will attack the survivors.</li>
+    <li>The number of survivors lost depends on the number of zombies and the current number of survivors that you have.</li>
+    <li>The minimum and maximum zombies in a horde increases by 5 zombies every 3 turns.</li>
+    <li>To survive, the player must repair facilities; these can only be repaired once all of the surrounding overgrowth has been cleared.</li>
+    <li>Clearing overgrowth cost 3 hours per shrub; the player clicks on a shrub to remove it.</li>
+    <li>Removing corpses from the prison yard permanently decreases the number of zombies in the horde by 1 for each corpse removed.</li>
+    <li>To remove a corpse, click on the corpse you wish to remove and use the cursor keys to move it to the edge of the map in any direction.</li>
+    <li>An indicator appears in the top right of the screen when you are in 'moving corpse' mode.</li>
+    <li>It costs 1 hour to move a corpse per 1 square of the map.</li>
+    <li>To deselect a corpse/get out of 'moving corpse' mode, press the enter key.</li>
+    <li>There are six facilities to repair; certain facilities take more hours to repair than others, and each has a different effect that is recieved upon repair.</li>
+    <li>Mouse over the buildings to see the description of the building, the cost of repair, the residual number of shrubs that need to be removed before repair, and the effect of repair.</li>
+</ul>
+</li>
+
+<li><strong>Strategies:</strong>
+What player strategies do you expect will be effective at playing this game?
+<ul> 
+    <li>The absolute first facility that should be acquired is the guard tower as it gives the player the 'guard' ability which lowers the number of casualties by 1 if the player 'guarded' before a zombie attack.</li>
+    <li>It is also imperative that the broadcast station be repaired ASAP to get the full benefits of its effect (obtain one new survivor every turn).</li>
+    <li>Removing corpses is a good way to increase your odds against the zombie horde as one zombie is removed from the horde for every corpse that you remove from the map.</li>
+    <li>Knowing when to repair the food storage building is important as it gives you a random number of new survivors and should only be used when the player is starting to run low on people.</li>
+</ul>
+</li>
+
+<li><strong>Story/Setting/Premise:</strong>
+A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and 
+interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
+How will the dramatic tension interact with the gameplay tension?
+<ul>
+    <li>You lived a simple live with your family in Springhill Valley when news of the virus hit. Warnings of cannabalism and the undead rising fell deaf upon your ears, and you ignored the reports in favor of 
+        planning a trip to the Bahamas during your scheduled leave. The night before you and your family are to depart, you awake to the sounds of tearing flesh and the screams of your children in their bedroom.
+        You rush to their aid only to find that your significant other has been infected and has chosen your children to be their first victims. With a heavy heart, you decapitate your spouse with the shovel they
+        gifted you on your birthday. You then procede to bury her and your two children with it in the backyard. You are a drifter now and have stumbled across a group of people who are completely incapable of 
+        dealing with this crisis on their own. You decide to help them and, in time, have become their leader. Months have passed, and it has gotten harder and harder to find decent shelter from the relentless
+        army of the undead. Fortunately for you, one of your survivors has stumbled across an abandoned prison facility untouched by the undead plague. You resolve to fortify it in the hopes that it can become
+        a suitable home for you and your group.
+    </li>
+</ul>
+</li>
+
+<li><strong>Target Audience:</strong>
+A single sentence that describes the demographic you're trying to reach.
+<ul>
+    <li>This prototype is targeted to anyone who enjoys post-apocalyptic games or strategy games where resources must be managed.</li>
+</ul>
+</li>
+
+<li><strong>Play Time:</strong>
+How long does your game take to play?
+<ul>
+    <li>Play time is approximately 5 minutes.</li>
+</ul>
+</li>
+
+</ul>
+
+</div>
+</body>
+</html>
