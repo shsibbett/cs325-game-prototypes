@@ -307,7 +307,7 @@ window.onload = function() {
                         food_storage = map.createLayer('Food Storage');
                         food_storage_repaired = true;
 			
-			int found_survivors;
+			var found_survivors;
 		
 			found_survivors = game.rnd.integerInRange(1, 3);
 			survivors += found_survivors;			
